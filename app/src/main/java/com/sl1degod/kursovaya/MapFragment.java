@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -15,52 +16,70 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.sl1degod.kursovaya.databinding.FragmentMapBinding;
+import com.squareup.picasso.BuildConfig;
 import com.yandex.mapkit.Animation;
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Point;
 import com.yandex.mapkit.map.CameraPosition;
 import com.yandex.mapkit.mapview.MapView;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Properties;
+
 public class MapFragment extends Fragment {
-    MapView mapview;
+    MapView mapView;
     Context context;
+
+    App app;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        MapKitFactory.setApiKey("f082a4ae-f30e-45f0-8eff-1a1f556d6980");
+    }
+
     @SuppressLint("ResourceType")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        context = getContext();
+
+        View rootView = inflater.inflate(R.layout.fragment_map, container, false);
+
         setHasOptionsMenu(true);
-        MapKitFactory.setApiKey("f082a4ae-f30e-45f0-8eff-1a1f556d6980");
+        app = getActivity().getApplication().
+        context = getContext();
+
         MapKitFactory.initialize(context);
-        mapview = (MapView) getActivity().findViewById(R.id.mapView);
-        Log.d("1230", String.valueOf(mapview));
+        mapView = rootView.findViewById(R.id.mapview);
 
 
-        mapview.getMap().move(
-                new CameraPosition(new Point(55.751574, 37.573856), 11.0f, 0.0f, 0.0f),
+
+        mapView.getMap().move(
+                new CameraPosition(new Point(55.829399, 49.113720), 11.0f, 0.0f, 0.0f),
                 new Animation(Animation.Type.SMOOTH, 0), null
         );
 
-
         Point mappoint = new Point(55.79, 37.57);
-        mapview.getMap().getMapObjects().addPlacemark(mappoint);
+        mapView.getMap().getMapObjects().addPlacemark(mappoint);
 
-        return inflater.inflate(R.layout.fragment_map, container, false);
+        return rootView;
     }
-
     @Override
     public void onStop() {
-        mapview.onStop();
+        mapView.onStop();
         MapKitFactory.getInstance().onStop();
         super.onStop();
     }
-
     @Override
     public void onStart() {
         MapKitFactory.getInstance().onStart();
-        mapview.onStart();
+        mapView.onStart();
         super.onStart();
-
     }
 }

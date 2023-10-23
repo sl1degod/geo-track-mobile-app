@@ -7,11 +7,13 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.sl1degod.kursovaya.App;
 import com.sl1degod.kursovaya.HomeFragment;
 import com.sl1degod.kursovaya.MapFragment;
 import com.sl1degod.kursovaya.R;
@@ -25,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
 
+    App app;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitle("Главная");
         setContentView(binding.getRoot());
+
+        app = (App) getApplication();
+
+
 
         bottomNavigationView = new BottomNavigationView(this);
 
@@ -52,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
                     getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new MapFragment()).commit();
                     item.setChecked(true);
                     toolbar.setTitle("Карта");
-                    Toast.makeText(this, "123", Toast.LENGTH_SHORT).show();
                     break;
             }
             return false;

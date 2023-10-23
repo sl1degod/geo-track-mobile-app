@@ -32,7 +32,7 @@ import java.util.Properties;
 
 public class MapFragment extends Fragment {
     MapView mapView;
-    Context context;
+    public Context context;
 
     App app;
 
@@ -40,33 +40,33 @@ public class MapFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        MapKitFactory.setApiKey("f082a4ae-f30e-45f0-8eff-1a1f556d6980");
     }
+
 
     @SuppressLint("ResourceType")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        context = getContext();
+
+        MapKitFactory.initialize(context);
 
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
 
         setHasOptionsMenu(true);
-        app = getActivity().getApplication().
-        context = getContext();
 
-        MapKitFactory.initialize(context);
+
         mapView = rootView.findViewById(R.id.mapview);
 
-
-
         mapView.getMap().move(
-                new CameraPosition(new Point(55.829399, 49.113720), 11.0f, 0.0f, 0.0f),
+                new CameraPosition(new Point(54.900316, 52.275428), 12.0f, 0.0f, 0.0f),
                 new Animation(Animation.Type.SMOOTH, 0), null
         );
 
         Point mappoint = new Point(55.79, 37.57);
         mapView.getMap().getMapObjects().addPlacemark(mappoint);
+
 
         return rootView;
     }

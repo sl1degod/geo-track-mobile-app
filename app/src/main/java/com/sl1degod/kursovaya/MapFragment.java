@@ -1,6 +1,7 @@
 package com.sl1degod.kursovaya;
 
 import static com.sl1degod.kursovaya.R.id.frame_layout;
+import static com.sl1degod.kursovaya.R.id.mapview;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -22,6 +23,7 @@ import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Point;
 import com.yandex.mapkit.map.CameraPosition;
 import com.yandex.mapkit.mapview.MapView;
+import com.yandex.runtime.image.ImageProvider;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -66,6 +68,8 @@ public class MapFragment extends Fragment {
 
         Point mappoint = new Point(55.79, 37.57);
         mapView.getMap().getMapObjects().addPlacemark(mappoint);
+        Point mappoint1 = new Point(54.900333, 52.275421);
+        mapView.getMap().getMapObjects().addPlacemark(mappoint1).setIcon(ImageProvider.fromResource(context, R.drawable.baseline_person_pin_circle_24));
 
 
         return rootView;

@@ -12,4 +12,6 @@
     <color name="back_color">#141414</color>
     <color name="fab_color">#20D761</color>
     <color name="red">#FF1100</color>
+    <color name="error">#cf6679</color>
+    <item name="blue" type="color">#FF33B5E5</item>
 </resources>

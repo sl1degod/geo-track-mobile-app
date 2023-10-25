@@ -1,4 +1,4 @@
-package com.sl1degod.kursovaya;
+package com.sl1degod.kursovaya.Fragments;
 
 import static com.sl1degod.kursovaya.R.id.frame_layout;
 import static com.sl1degod.kursovaya.R.id.mapview;
@@ -16,7 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.sl1degod.kursovaya.databinding.FragmentMapBinding;
+import com.sl1degod.kursovaya.App;
+import com.sl1degod.kursovaya.R;
 import com.squareup.picasso.BuildConfig;
 import com.yandex.mapkit.Animation;
 import com.yandex.mapkit.MapKitFactory;

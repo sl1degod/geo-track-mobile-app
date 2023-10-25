@@ -7,15 +7,13 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.os.Bundle;
 
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.sl1degod.kursovaya.App;
-import com.sl1degod.kursovaya.HomeFragment;
-import com.sl1degod.kursovaya.MapFragment;
+import com.sl1degod.kursovaya.Fragments.HomeFragment;
+import com.sl1degod.kursovaya.Fragments.MapFragment;
 import com.sl1degod.kursovaya.R;
 import com.sl1degod.kursovaya.databinding.ActivityMainBinding;
 

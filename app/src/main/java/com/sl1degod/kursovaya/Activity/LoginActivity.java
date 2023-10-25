@@ -1,8 +1,10 @@
-package com.sl1degod.kursovaya;
+package com.sl1degod.kursovaya.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.sl1degod.kursovaya.R;
 
 public class LoginActivity extends AppCompatActivity {
 

@@ -1,12 +1,15 @@
 package com.sl1degod.kursovaya.Models;
 
 public class Reports {
-    String id, FIO, violations, violations_image;
+    String id, fio, violations, object, latitude, longitude, violations_image;
 
-    public Reports(String id, String FIO, String violations, String violations_image) {
+    public Reports(String id, String fio, String violations, String object, String latitude, String longitude, String violations_image) {
         this.id = id;
-        this.FIO = FIO;
+        this.fio = fio;
         this.violations = violations;
+        this.object = object;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.violations_image = violations_image;
     }
 
@@ -18,12 +21,12 @@ public class Reports {
         this.id = id;
     }
 
-    public String getFIO() {
-        return FIO;
+    public String getFio() {
+        return fio;
     }
 
-    public void setFIO(String FIO) {
-        this.FIO = FIO;
+    public void setFio(String fio) {
+        this.fio = fio;
     }
 
     public String getViolations() {
@@ -32,6 +35,30 @@ public class Reports {
 
     public void setViolations(String violations) {
         this.violations = violations;
+    }
+
+    public String getObject() {
+        return object;
+    }
+
+    public void setObject(String object) {
+        this.object = object;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
     public String getViolations_image() {

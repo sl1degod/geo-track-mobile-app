@@ -17,18 +17,24 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.sl1degod.kursovaya.App;
+import com.sl1degod.kursovaya.Models.Reports;
 import com.sl1degod.kursovaya.R;
 import com.squareup.picasso.BuildConfig;
 import com.yandex.mapkit.Animation;
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Point;
 import com.yandex.mapkit.map.CameraPosition;
+import com.yandex.mapkit.map.MapObjectCollection;
+import com.yandex.mapkit.map.PlacemarkMapObject;
 import com.yandex.mapkit.mapview.MapView;
 import com.yandex.runtime.image.ImageProvider;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
@@ -37,7 +43,9 @@ public class MapFragment extends Fragment {
     MapView mapView;
     public Context context;
 
-    App app;
+    Reports reports;
+
+    List<Reports> reportsList = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,9 +63,12 @@ public class MapFragment extends Fragment {
 
         MapKitFactory.initialize(context);
 
+
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
 
         setHasOptionsMenu(true);
+
+        String longitude = reports.getLongitude();
 
 
         mapView = rootView.findViewById(R.id.mapview);
@@ -67,10 +78,18 @@ public class MapFragment extends Fragment {
                 new Animation(Animation.Type.SMOOTH, 0), null
         );
 
-        Point mappoint = new Point(55.79, 37.57);
-        mapView.getMap().getMapObjects().addPlacemark(mappoint);
-        Point mappoint1 = new Point(54.900333, 52.275421);
-        mapView.getMap().getMapObjects().addPlacemark(mappoint1).setIcon(ImageProvider.fromResource(context, R.drawable.baseline_person_pin_circle_24));
+
+
+
+        MapObjectCollection pinsCollection = mapView.getMap().getMapObjects().addCollection();
+        List<Point> points = Arrays.asList(
+                new Point(Double.parseDouble(reports.getLatitude()), Double.parseDouble(reports.getLongitude()))
+        );
+
+        for (Point point : points) {
+            PlacemarkMapObject placemark = pinsCollection.addPlacemark();
+            placemark.setGeometry(point);
+        }
 
 
         return rootView;

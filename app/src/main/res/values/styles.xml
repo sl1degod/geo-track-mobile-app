@@ -16,4 +16,8 @@
         <item name="android:textColor">@color/red</item>
         <item name="android:textSize">11sp</item>
     </style>
+
+    <style name="MyBottomDialog" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:windowBackground">#00FFFFFF</item>
+    </style>
 </resources>

@@ -9,6 +9,8 @@ public class App extends Application {
     private static App mInstance;
     final String MAPKIT_API_KEY = "f082a4ae-f30e-45f0-8eff-1a1f556d6980";
 
+    String latitude, longitude;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -23,11 +25,19 @@ public class App extends Application {
         return mInstance;
     }
 
-    public Boolean getActiveMap() {
-        return isActiveMap;
+    public String getLatitude() {
+        return latitude;
     }
 
-    public void setActiveMap(Boolean activeMap) {
-        isActiveMap = activeMap;
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 }

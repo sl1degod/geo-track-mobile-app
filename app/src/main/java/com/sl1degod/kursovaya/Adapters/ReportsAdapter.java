@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.sl1degod.kursovaya.App;
 import com.sl1degod.kursovaya.Models.Reports;
 import com.sl1degod.kursovaya.R;
 import com.sl1degod.kursovaya.Viewmodels.ReportsViewModel;

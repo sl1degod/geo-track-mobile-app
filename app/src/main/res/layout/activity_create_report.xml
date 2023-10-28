@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.CreateReportActivity">
+
+    <RelativeLayout
+        android:id="@+id/rel1"
+        android:layout_width="match_parent"
+        android:layout_height="150dp">
+
+        <ImageButton
+            android:id="@+id/addReportImage"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/baseline_camera_alt_24"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/addReportImage"
+            android:text="Добавить фото"
+            android:layout_marginStart="10dp"/>
+
+        <Spinner
+            android:id="@+id/violations_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="200dp"
+            android:layout_marginTop="50dp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rel1">
+
+        <ImageView
+            android:id="@+id/setCreateReportImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:id="@+id/sendReport"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_button"
+            android:text="Отправить"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="40dp"/>
+
+
+    </RelativeLayout>
+
+
+
+
+</RelativeLayout>

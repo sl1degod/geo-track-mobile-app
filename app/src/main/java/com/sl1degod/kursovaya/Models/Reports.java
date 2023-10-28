@@ -1,7 +1,7 @@
 package com.sl1degod.kursovaya.Models;
 
 public class Reports {
-    String id, fio, violations, object, latitude, longitude, violations_image;
+    public String id, fio, violations, object, latitude, longitude, violations_image;
 
     public Reports(String id, String fio, String violations, String object, String latitude, String longitude, String violations_image) {
         this.id = id;

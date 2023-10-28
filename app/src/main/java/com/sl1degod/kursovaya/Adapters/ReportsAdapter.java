@@ -77,7 +77,6 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.AdapterV
             violations.setText(reports.getViolations());
             object.setText(reports.getObject());
 
-
             Glide.with(context)
                     .load(reports.getViolations_image())
                     .centerCrop()

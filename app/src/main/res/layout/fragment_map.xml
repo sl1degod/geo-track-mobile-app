@@ -16,5 +16,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-
+    <FrameLayout
+        android:id="@+id/containerBottomSheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="400dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" />
 </FrameLayout>

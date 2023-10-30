@@ -25,7 +25,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.sl1degod.kursovaya.Adapters.ReportsAdapter;
 import com.sl1degod.kursovaya.App;
 import com.sl1degod.kursovaya.Models.Objects;
@@ -59,7 +61,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
-public class MapFragment extends Fragment {
+public class MapFragment extends BottomSheetDialogFragment {
     MapView mapView;
     public Context context;
 
@@ -169,16 +171,17 @@ public class MapFragment extends Fragment {
         TextView set_longitude_map = bottomSheetDialog.findViewById(R.id.set_longitude_map);
         ImageView setImageMap = bottomSheetDialog.findViewById(R.id.setImageMap);
         try {
-            Objects objects = new Objects("1", "1", "1", "1", null);
-            set_id_map.setText(objects.getId());
-            Log.d("objcetsID", objects.getId());
-            set_object_map.setText(objects.getName());
-            set_latitude_map.setText(objects.getLatitude());
-            set_longitude_map.setText(objects.getLongitude());
-            Glide.with(context)
-                    .load(objects.getImage())
-                    .centerCrop()
-                    .into(setImageMap);
+//            Objects objects = objectsList.get(getObject(id));
+
+            set_id_map.setText("1221");
+//            Log.d("objcetsID", objects.getId());
+//            set_object_map.setText(objects.getName());
+//            set_latitude_map.setText(objects.getLatitude());
+//            set_longitude_map.setText(objects.getLongitude());
+//            Glide.with(context)
+//                    .load(objects.getImage())
+//                    .centerCrop()
+//                    .into(setImageMap);
 
         } catch (Exception ex) {
             Toast.makeText(context, "" + ex.getMessage(), Toast.LENGTH_SHORT).show();

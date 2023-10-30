@@ -28,6 +28,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.sl1degod.kursovaya.Adapters.ReportsAdapter;
 import com.sl1degod.kursovaya.App;
+import com.sl1degod.kursovaya.Models.Objects;
 import com.sl1degod.kursovaya.Models.Reports;
 import com.sl1degod.kursovaya.R;
 import com.sl1degod.kursovaya.Viewmodels.ObjectsViewModel;
@@ -56,7 +57,6 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Properties;
 
 public class MapFragment extends Fragment {
@@ -99,7 +99,7 @@ public class MapFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(ReportsViewModel.class);
         objectsViewModel = new ViewModelProvider(this).get(ObjectsViewModel.class);
         getAllReports();
-
+        getObject();
 
         mapView.getMap().move(
                 new CameraPosition(new Point(54.900316, 52.275428), 12.0f, 0.0f, 0.0f),
@@ -117,30 +117,30 @@ public class MapFragment extends Fragment {
                 Toast.makeText(context, "Unluko", Toast.LENGTH_SHORT).show();
             } else {
                 reportsList = reports;
-                addPoints();
             }
         });
         viewModel.getAllReports();
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void getObject(String id) {
+    public void getObject() {
         objectsViewModel.getListMutableLiveData().observe(getViewLifecycleOwner(), objects -> {
             if (objects == null) {
                 Toast.makeText(context, "Unluko", Toast.LENGTH_SHORT).show();
             } else {
                 objectsList = objects;
+                addPoints();
             }
         });
-        objectsViewModel.getObjects(id);
+        objectsViewModel.getObjects();
     }
 
 
 
     private void addPoints() {
         Log.d("12131", reportsList.toString());
-        reportsList.forEach(report -> {
-            Point point = new Point(Double.parseDouble(report.getLatitude()), Double.parseDouble(report.getLongitude()));
+        objectsList.forEach(objects -> {
+            Point point = new Point(Double.parseDouble(objects.getLatitude()), Double.parseDouble(objects.getLongitude()));
             points.add(point);
         });
 
@@ -154,7 +154,7 @@ public class MapFragment extends Fragment {
         @Override
         public boolean onMapObjectTap(@NonNull MapObject mapObject, @NonNull Point point) {
             showDialog();
-            mapObject.
+
 //            getObject(userData.toString());
             return false;
         }
@@ -169,17 +169,17 @@ public class MapFragment extends Fragment {
         TextView set_longitude_map = bottomSheetDialog.findViewById(R.id.set_longitude_map);
         ImageView setImageMap = bottomSheetDialog.findViewById(R.id.setImageMap);
         try {
-            reportsList.forEach(report -> {
-                set_id_map.setText(report.getId());
-                set_object_map.setText(report.getObject());
-                set_latitude_map.setText(report.getLatitude());
-                set_longitude_map.setText(report.getLongitude());
-                Glide.with(context)
-                        .load(report.getViolations_image())
-                        .centerCrop()
-                        .into(setImageMap);
+            Objects objects = new Objects("1", "1", "1", "1", null);
+            set_id_map.setText(objects.getId());
+            Log.d("objcetsID", objects.getId());
+            set_object_map.setText(objects.getName());
+            set_latitude_map.setText(objects.getLatitude());
+            set_longitude_map.setText(objects.getLongitude());
+            Glide.with(context)
+                    .load(objects.getImage())
+                    .centerCrop()
+                    .into(setImageMap);
 
-            });
         } catch (Exception ex) {
             Toast.makeText(context, "" + ex.getMessage(), Toast.LENGTH_SHORT).show();
         }

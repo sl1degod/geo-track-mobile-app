@@ -6,13 +6,11 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.sl1degod.kursovaya.Models.Reports;
-import com.sl1degod.kursovaya.Models.Users;
+import com.sl1degod.kursovaya.Models.Objects;
 import com.sl1degod.kursovaya.Network.RetrofitInstance;
 import com.sl1degod.kursovaya.Network.Routes;
 
 import java.util.List;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,9 +28,9 @@ public class ObjectsViewModel extends ViewModel {
         this.listMutableLiveData = listMutableLiveData;
     }
 
-    public void getObjects(String id) {
+    public void getObjects() {
         Routes routes = RetrofitInstance.getRetrofitInstance().create(Routes.class);
-        Call<List<Objects>> call = routes.getObjects(Integer.parseInt(id));
+        Call<List<Objects>> call = routes.getObjects();
         call.enqueue(new Callback<List<Objects>>() {
             @Override
             public void onResponse(@NonNull Call<List<Objects>> call, @NonNull Response<List<Objects>> response) {

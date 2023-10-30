@@ -96,6 +96,7 @@ public class MapFragment extends BottomSheetDialogFragment {
         icon = ImageProvider.fromResource(context, R.drawable.marker);
         MapKitFactory.initialize(context);
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
+
         setHasOptionsMenu(true);
         mapView = rootView.findViewById(R.id.mapview);
         viewModel = new ViewModelProvider(this).get(ReportsViewModel.class);
@@ -148,8 +149,9 @@ public class MapFragment extends BottomSheetDialogFragment {
 
         for (Point point : points) {
             mapView.getMap().getMapObjects().addPlacemark(point).setIcon(icon, new IconStyle().setScale(0.5f));
-            mapView.getMap().getMapObjects().addTapListener(mapObjectTapListener);
         }
+        mapView.getMap().getMapObjects().addTapListener(mapObjectTapListener);
+
     }
 
     private MapObjectTapListener mapObjectTapListener = new MapObjectTapListener() {
@@ -157,35 +159,26 @@ public class MapFragment extends BottomSheetDialogFragment {
         public boolean onMapObjectTap(@NonNull MapObject mapObject, @NonNull Point point) {
             showDialog();
 
-//            getObject(userData.toString());
             return false;
         }
     };
 
     private void showDialog() {
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context, R.style.MyBottomDialog);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
         bottomSheetDialog.setContentView(R.layout.bottomsheet);
-        TextView set_id_map = bottomSheetDialog.findViewById(R.id.set_id_map);
         TextView set_object_map = bottomSheetDialog.findViewById(R.id.set_object_map);
         TextView set_latitude_map = bottomSheetDialog.findViewById(R.id.set_latitude_map);
         TextView set_longitude_map = bottomSheetDialog.findViewById(R.id.set_longitude_map);
         ImageView setImageMap = bottomSheetDialog.findViewById(R.id.setImageMap);
-        try {
-//            Objects objects = objectsList.get(getObject(id));
 
-            set_id_map.setText("1221");
-//            Log.d("objcetsID", objects.getId());
-//            set_object_map.setText(objects.getName());
-//            set_latitude_map.setText(objects.getLatitude());
-//            set_longitude_map.setText(objects.getLongitude());
-//            Glide.with(context)
-//                    .load(objects.getImage())
-//                    .centerCrop()
-//                    .into(setImageMap);
+        set_object_map.setText(objectsList.get(0).getName());
+        set_latitude_map.setText(objectsList.get(0).getLatitude());
+        set_longitude_map.setText(objectsList.get(0).getLongitude());
+        Glide.with(context)
+                .load(objectsList.get(0).getImage())
+                .centerCrop()
+                .into(setImageMap);
 
-        } catch (Exception ex) {
-            Toast.makeText(context, "" + ex.getMessage(), Toast.LENGTH_SHORT).show();
-        }
         bottomSheetDialog.show();
     };
 

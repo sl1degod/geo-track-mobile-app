@@ -62,7 +62,6 @@ public class HomeFragment extends Fragment {
             if (reports == null) {
                 Toast.makeText(context, "Unluko", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(context, "LETS GOOO", Toast.LENGTH_SHORT).show();
                 adapter.setReportsList(reports);
                 adapter.notifyDataSetChanged();
             }

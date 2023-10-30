@@ -3,6 +3,7 @@ package com.sl1degod.kursovaya.Network;
 import com.sl1degod.kursovaya.Models.Objects;
 import com.sl1degod.kursovaya.Models.Reports;
 import com.sl1degod.kursovaya.Models.Users;
+import com.sl1degod.kursovaya.Models.UsersProfile;
 
 import java.util.List;
 
@@ -14,9 +15,9 @@ import retrofit2.http.Query;
 
 public interface Routes {
 
-    @GET("users")
+    @GET("users/{id}")
     @Headers({"Accept:application/json", "Content-Type:application/json"})
-    Call<List<Users>> getAllUsers();
+    Call<Users> getUser(@Path("id") String id);
 
     @GET("users")
     @Headers({"Accept:application/json", "Content-Type:application/json"})

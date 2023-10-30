@@ -1,17 +1,7 @@
 package com.sl1degod.kursovaya.Models;
 
 public class Users {
-    String id, firstName, secondName, lastName, post, login, password;
-
-    public Users(String id, String firstName, String secondName, String lastName, String post, String login, String password) {
-        this.id = id;
-        this.firstName = firstName;
-        this.secondName = secondName;
-        this.lastName = lastName;
-        this.post = post;
-        this.login = login;
-        this.password = password;
-    }
+    String id, firstname, secondname, lastname, image, post, login, password;
 
     public String getId() {
         return id;
@@ -21,28 +11,36 @@ public class Users {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
-    public String getSecondName() {
-        return secondName;
+    public String getSecondname() {
+        return secondname;
     }
 
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
+    public void setSecondname(String secondname) {
+        this.secondname = secondname;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getPost() {

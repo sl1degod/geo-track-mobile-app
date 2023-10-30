@@ -1,15 +1,19 @@
 package com.sl1degod.kursovaya.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.sl1degod.kursovaya.App;
+import com.sl1degod.kursovaya.Fragments.ProfileFragment;
 import com.sl1degod.kursovaya.R;
 import com.sl1degod.kursovaya.Viewmodels.LoginViewModel;
 import com.sl1degod.kursovaya.databinding.ActivityLoginBinding;
@@ -35,7 +39,6 @@ public class LoginActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
         loginButton.setOnClickListener(e -> {
-            Toast.makeText(this, "1323", Toast.LENGTH_SHORT).show();
             if (loginTIED.getText().toString().isEmpty()) {
                 loginTIL.setError("Введите верные данные");
                 passwordTIL.setErrorEnabled(false);
@@ -55,15 +58,14 @@ public class LoginActivity extends AppCompatActivity {
             for (int i = 0; i < users.size(); i++) {
                 if (user_login.equals(users.get(i).getLogin()) && user_password.equals(users.get(i).getPassword())) {
                     Intent intent = new Intent(this, MainActivity.class);
+                    App.getInstance().setUser_id(users.get(i).getId());
                     intent.putExtra("user_id", users.get(i).getId());
+                    Log.d("login", users.get(i).getId());
                     Toast.makeText(this,"Успешно",Toast.LENGTH_SHORT).show();
                     startActivity(intent);
                 } else {
                     result = false;
                 }
-            }
-            if (!result) {
-                Toast.makeText(this, "Такого пользователя нет", Toast.LENGTH_SHORT).show();
             }
         });
         viewModel.getUsers(user_login);

@@ -14,6 +14,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.sl1degod.kursovaya.App;
 import com.sl1degod.kursovaya.Fragments.HomeFragment;
 import com.sl1degod.kursovaya.Fragments.MapFragment;
+import com.sl1degod.kursovaya.Fragments.ProfileFragment;
 import com.sl1degod.kursovaya.R;
 import com.sl1degod.kursovaya.databinding.ActivityMainBinding;
 
@@ -59,6 +60,11 @@ public class MainActivity extends AppCompatActivity {
                     getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new MapFragment()).commit();
                     item.setChecked(true);
                     toolbar.setTitle("Карта");
+                    break;
+                case R.id.bottomProfile:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new ProfileFragment()).commit();
+                    item.setChecked(true);
+                    toolbar.setTitle("Профиль");
                     break;
             }
             return false;

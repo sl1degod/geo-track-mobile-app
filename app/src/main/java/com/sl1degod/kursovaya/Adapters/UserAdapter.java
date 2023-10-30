@@ -91,13 +91,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.AdapterViewHol
         }
 
         public void bind(Users users) {
-            id.setText(users.getId());
-            first_name.setText(users.getFirstName());
-            second_name.setText(users.getSecondName());
-            last_name.setText(users.getLastName());
-            post.setText(users.getPost());
-            login.setText(users.getLogin());
-            password.setText(users.getPassword());
+//            id.setText(users.getId());
+//            first_name.setText(users.getFirstName());
+//            second_name.setText(users.getSecondName());
+//            last_name.setText(users.getLastName());
+//            post.setText(users.getPost());
+//            login.setText(users.getLogin());
+//            password.setText(users.getPassword());
 
 
 //            Glide.with(context)

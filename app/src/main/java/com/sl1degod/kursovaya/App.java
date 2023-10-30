@@ -9,7 +9,7 @@ public class App extends Application {
     private static App mInstance;
     final String MAPKIT_API_KEY = "f082a4ae-f30e-45f0-8eff-1a1f556d6980";
 
-    String latitude, longitude;
+    String user_id;
 
     @Override
     public void onCreate() {
@@ -25,19 +25,12 @@ public class App extends Application {
         return mInstance;
     }
 
-    public String getLatitude() {
-        return latitude;
+
+    public String getUser_id() {
+        return user_id;
     }
 
-    public void setLatitude(String latitude) {
-        this.latitude = latitude;
-    }
-
-    public String getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(String longitude) {
-        this.longitude = longitude;
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 }

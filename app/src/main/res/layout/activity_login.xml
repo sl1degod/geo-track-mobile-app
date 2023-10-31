@@ -47,6 +47,7 @@
             android:layout_height="wrap_content"
             style="@style/TextInputLayout"
             android:layout_below="@id/login_input"
+            app:passwordToggleEnabled="true"
             android:layout_marginStart="20dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="20dp">

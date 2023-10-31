@@ -5,6 +5,7 @@ import static com.sl1degod.kursovaya.R.id.mapview;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
@@ -19,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,15 +30,18 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.sl1degod.kursovaya.Activity.CreateReportActivity;
 import com.sl1degod.kursovaya.Adapters.ReportsAdapter;
 import com.sl1degod.kursovaya.App;
 import com.sl1degod.kursovaya.Models.Objects;
+import com.sl1degod.kursovaya.Models.ReportPoint;
 import com.sl1degod.kursovaya.Models.Reports;
 import com.sl1degod.kursovaya.R;
 import com.sl1degod.kursovaya.Viewmodels.ObjectsViewModel;
 import com.sl1degod.kursovaya.Viewmodels.ReportsViewModel;
 import com.squareup.picasso.BuildConfig;
 import com.yandex.mapkit.Animation;
+import com.yandex.mapkit.GeoObject;
 import com.yandex.mapkit.Image;
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Point;
@@ -102,7 +107,7 @@ public class MapFragment extends BottomSheetDialogFragment {
         viewModel = new ViewModelProvider(this).get(ReportsViewModel.class);
         objectsViewModel = new ViewModelProvider(this).get(ObjectsViewModel.class);
         getAllReports();
-        getObject();
+        getObjects();
 
         mapView.getMap().move(
                 new CameraPosition(new Point(54.900316, 52.275428), 12.0f, 0.0f, 0.0f),
@@ -126,7 +131,7 @@ public class MapFragment extends BottomSheetDialogFragment {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void getObject() {
+    public void getObjects() {
         objectsViewModel.getListMutableLiveData().observe(getViewLifecycleOwner(), objects -> {
             if (objects == null) {
                 Toast.makeText(context, "Unluko", Toast.LENGTH_SHORT).show();
@@ -138,46 +143,58 @@ public class MapFragment extends BottomSheetDialogFragment {
         objectsViewModel.getObjects();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    public void getObject(String id) {
+        objectsViewModel.getListMutableLiveData().observe(getViewLifecycleOwner(), objects -> {
+            if (objects == null) {
+                Toast.makeText(context, "Unluko", Toast.LENGTH_SHORT).show();
+            } else {
+//                objectsList = objects;
+            }
+        });
+        objectsViewModel.getObject(id);
+    }
+
 
 
     private void addPoints() {
-        Log.d("12131", reportsList.toString());
         objectsList.forEach(objects -> {
             Point point = new Point(Double.parseDouble(objects.getLatitude()), Double.parseDouble(objects.getLongitude()));
-            points.add(point);
+
+            PlacemarkMapObject placemarkMapObject = mapView.getMapWindow().getMap().getMapObjects().addPlacemark();
+            placemarkMapObject.setGeometry(point);
+            placemarkMapObject.setIcon(icon, new IconStyle().setScale(0.5f));
+            placemarkMapObject.setUserData(objects);
         });
 
-        for (Point point : points) {
-            mapView.getMap().getMapObjects().addPlacemark(point).setIcon(icon, new IconStyle().setScale(0.5f));
-        }
         mapView.getMap().getMapObjects().addTapListener(mapObjectTapListener);
-
     }
 
-    private MapObjectTapListener mapObjectTapListener = new MapObjectTapListener() {
-        @Override
-        public boolean onMapObjectTap(@NonNull MapObject mapObject, @NonNull Point point) {
-            showDialog();
+    private MapObjectTapListener mapObjectTapListener = (mapObject, point) -> {
+        showDialog((Objects) mapObject.getUserData());
 
-            return false;
-        }
+        return false;
     };
 
-    private void showDialog() {
+    private void showDialog(Objects object) {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
         bottomSheetDialog.setContentView(R.layout.bottomsheet);
         TextView set_object_map = bottomSheetDialog.findViewById(R.id.set_object_map);
         TextView set_latitude_map = bottomSheetDialog.findViewById(R.id.set_latitude_map);
         TextView set_longitude_map = bottomSheetDialog.findViewById(R.id.set_longitude_map);
         ImageView setImageMap = bottomSheetDialog.findViewById(R.id.setImageMap);
-
-        set_object_map.setText(objectsList.get(0).getName());
-        set_latitude_map.setText(objectsList.get(0).getLatitude());
-        set_longitude_map.setText(objectsList.get(0).getLongitude());
+        Button sendReport = bottomSheetDialog.findViewById(R.id.sendReport);
+        set_object_map.setText(object.getName());
+        set_latitude_map.setText(object.getLatitude());
+        set_longitude_map.setText(object.getLongitude());
         Glide.with(context)
-                .load(objectsList.get(0).getImage())
+                .load(object.getImage())
                 .centerCrop()
                 .into(setImageMap);
+
+//        sendReport.setOnClickListener(e -> {
+//            startActivity(new Intent(getContext(), CreateReportActivity.class));
+//        });
 
         bottomSheetDialog.show();
     };
@@ -201,7 +218,7 @@ public class MapFragment extends BottomSheetDialogFragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.menu_toolbar, menu);
-        menu.setGroupVisible(R.id.homeGroup, false);
+//        menu.setGroupVisible(R.id.homeGroup, false);
 
         super.onCreateOptionsMenu(menu, inflater);
     }

@@ -40,17 +40,20 @@ public class LoginActivity extends AppCompatActivity {
 
         loginButton.setOnClickListener(e -> {
             if (loginTIED.getText().toString().isEmpty()) {
-                loginTIL.setError("Введите верные данные");
+                loginTIL.setError("Поле Логин не может быть пустым");
                 passwordTIL.setErrorEnabled(false);
             } else if (passwordTIED.getText().toString().isEmpty()) {
-                passwordTIL.setError("Введите верные данные");
+                passwordTIL.setError("Поле Пароль не может быть пустым");
                 loginTIL.setErrorEnabled(false);
-            } else {
+            }
+            else {
+                result = true;
                 loginTIL.setErrorEnabled(false);
                 passwordTIL.setErrorEnabled(false);
                 getUser(loginTIED.getText().toString(), passwordTIED.getText().toString());
             }
         });
+
     }
 
     private void getUser(String user_login, String user_password) {
@@ -61,12 +64,15 @@ public class LoginActivity extends AppCompatActivity {
                     App.getInstance().setUser_id(users.get(i).getId());
                     intent.putExtra("user_id", users.get(i).getId());
                     Log.d("login", users.get(i).getId());
-                    Toast.makeText(this,"Успешно",Toast.LENGTH_SHORT).show();
                     startActivity(intent);
                 } else {
                     result = false;
                 }
             }
+//            if (!result) {
+//                loginTIL.setError(" ");
+//                passwordTIL.setError("Такого пользователя нет");
+//            }
         });
         viewModel.getUsers(user_login);
     }

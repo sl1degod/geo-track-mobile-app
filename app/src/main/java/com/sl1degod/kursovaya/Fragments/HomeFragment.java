@@ -73,16 +73,16 @@ public class HomeFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.menu_toolbar, menu);
-        menu.setGroupVisible(R.id.homeGroup, true);
+//        menu.setGroupVisible(R.id.homeGroup, true);
 
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.addPlaylists) {
-            startActivity(new Intent(context, CreateReportActivity.class));
-        }
+//        if (item.getItemId() == R.id.addPlaylists) {
+//            startActivity(new Intent(context, CreateReportActivity.class));
+//        }
         return super.onOptionsItemSelected(item);
     }
 }

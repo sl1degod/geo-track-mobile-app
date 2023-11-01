@@ -1,14 +1,14 @@
 package com.sl1degod.kursovaya.Models;
 
 public class Objects {
-    String id, name, latitude, longitude, image;
+    String id, name, latitude, longitude, uuid_image;
 
-    public Objects(String id, String name, String latitude, String longitude, String image) {
+    public Objects(String id, String name, String latitude, String longitude, String uuid_image) {
         this.id = id;
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.image = image;
+        this.uuid_image = uuid_image;
     }
 
     public String getId() {
@@ -43,11 +43,11 @@ public class Objects {
         this.longitude = longitude;
     }
 
-    public String getImage() {
-        return image;
+    public String getUuid_image() {
+        return uuid_image;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setUuid_image(String uuid_image) {
+        this.uuid_image = uuid_image;
     }
 }

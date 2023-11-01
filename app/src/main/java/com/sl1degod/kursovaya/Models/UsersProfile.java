@@ -3,14 +3,14 @@ package com.sl1degod.kursovaya.Models;
 
 
 public class UsersProfile {
-    String id, firstName, secondName, lastName, image, post, login, password;
+    String id, firstName, secondName, lastName, uuid_image, post, login, password;
 
-    public UsersProfile(String id, String firstName, String secondName, String lastName, String image, String post, String login, String password) {
+    public UsersProfile(String id, String firstName, String secondName, String lastName, String uuid_image, String post, String login, String password) {
         this.id = id;
         this.firstName = firstName;
         this.secondName = secondName;
         this.lastName = lastName;
-        this.image = image;
+        this.uuid_image = uuid_image;
         this.post = post;
         this.login = login;
         this.password = password;
@@ -48,12 +48,12 @@ public class UsersProfile {
         this.lastName = lastName;
     }
 
-    public String getImage() {
-        return image;
+    public String getUuid_image() {
+        return uuid_image;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setUuid_image(String uuid_image) {
+        this.uuid_image = uuid_image;
     }
 
     public String getPost() {

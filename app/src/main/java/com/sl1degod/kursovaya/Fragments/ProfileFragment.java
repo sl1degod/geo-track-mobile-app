@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.sl1degod.kursovaya.App;
 import com.sl1degod.kursovaya.Models.Users;
+import com.sl1degod.kursovaya.Network.RetrofitInstance;
 import com.sl1degod.kursovaya.R;
 import com.sl1degod.kursovaya.Viewmodels.ReportsViewModel;
 import com.sl1degod.kursovaya.Viewmodels.UserViewModel;
@@ -43,6 +44,8 @@ public class ProfileFragment extends Fragment {
     List<Users> usersList = new ArrayList<>();
 
     Users users;
+
+    String pathToImage = RetrofitInstance.getRetrofitInstance().baseUrl() + "users/image/";
 
     String id = App.getInstance().getUser_id();
 
@@ -75,6 +78,7 @@ public class ProfileFragment extends Fragment {
         viewModel.getUser(id);
     }
 
+
     private void setData(Users user, View view) {
         TextView surname = view.findViewById(R.id.setSurname);
         TextView name = view.findViewById(R.id.setName);
@@ -88,8 +92,10 @@ public class ProfileFragment extends Fragment {
         login.setText(user.getLogin());
         password.setText(user.getPassword());
 
+        System.out.println(pathToImage + id);
+
         Glide.with(context)
-                    .load(user.getImage())
+                    .load(pathToImage + id)
                     .centerCrop()
                     .into(imageView);
     }

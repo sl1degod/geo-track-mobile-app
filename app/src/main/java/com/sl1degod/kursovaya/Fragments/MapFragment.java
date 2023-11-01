@@ -36,6 +36,7 @@ import com.sl1degod.kursovaya.App;
 import com.sl1degod.kursovaya.Models.Objects;
 import com.sl1degod.kursovaya.Models.ReportPoint;
 import com.sl1degod.kursovaya.Models.Reports;
+import com.sl1degod.kursovaya.Network.RetrofitInstance;
 import com.sl1degod.kursovaya.R;
 import com.sl1degod.kursovaya.Viewmodels.ObjectsViewModel;
 import com.sl1degod.kursovaya.Viewmodels.ReportsViewModel;
@@ -82,8 +83,10 @@ public class MapFragment extends BottomSheetDialogFragment {
 
     List<Point> points = new ArrayList<>();
 
-    String idObject = "";
     ImageProvider icon;
+
+    String pathToImage = RetrofitInstance.getRetrofitInstance().baseUrl() + "objects/image/";
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -183,18 +186,18 @@ public class MapFragment extends BottomSheetDialogFragment {
         TextView set_latitude_map = bottomSheetDialog.findViewById(R.id.set_latitude_map);
         TextView set_longitude_map = bottomSheetDialog.findViewById(R.id.set_longitude_map);
         ImageView setImageMap = bottomSheetDialog.findViewById(R.id.setImageMap);
-        Button sendReport = bottomSheetDialog.findViewById(R.id.sendReport);
+        Button sendReport = bottomSheetDialog.findViewById(R.id.button_create_report);
         set_object_map.setText(object.getName());
         set_latitude_map.setText(object.getLatitude());
         set_longitude_map.setText(object.getLongitude());
         Glide.with(context)
-                .load(object.getImage())
+                .load(pathToImage + object.getUuid_image())
                 .centerCrop()
                 .into(setImageMap);
 
-//        sendReport.setOnClickListener(e -> {
-//            startActivity(new Intent(getContext(), CreateReportActivity.class));
-//        });
+        sendReport.setOnClickListener(e -> {
+            startActivity(new Intent(getContext(), CreateReportActivity.class));
+        });
 
         bottomSheetDialog.show();
     };

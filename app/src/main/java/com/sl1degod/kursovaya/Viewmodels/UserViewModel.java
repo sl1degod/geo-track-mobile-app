@@ -19,8 +19,15 @@ import retrofit2.Response;
 
 public class UserViewModel extends ViewModel {
     private MutableLiveData<Users> usersData = new MutableLiveData<>();
+    private MutableLiveData<Users> usersImage = new MutableLiveData<>();
+
+
     public MutableLiveData<Users> getUsersData() {
         return usersData;
+    }
+
+    public MutableLiveData<Users> getUsersImage() {
+        return usersImage;
     }
 
     public void getUser(String id) {

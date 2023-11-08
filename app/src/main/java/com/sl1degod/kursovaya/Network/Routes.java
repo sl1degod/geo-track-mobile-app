@@ -5,6 +5,7 @@ import com.sl1degod.kursovaya.Models.ReportPoint;
 import com.sl1degod.kursovaya.Models.Reports;
 import com.sl1degod.kursovaya.Models.Users;
 import com.sl1degod.kursovaya.Models.UsersProfile;
+import com.sl1degod.kursovaya.Models.Violations;
 
 import java.util.List;
 
@@ -35,4 +36,8 @@ public interface Routes {
     @GET("objects")
     @Headers({"Accept:application/json", "Content-Type:application/json"})
     Call<List<Objects>> getObjects();
+
+    @GET("violations")
+    @Headers({"Accept:application/json", "Content-Type:application/json"})
+    Call<List<Violations>> getViolations();
 }

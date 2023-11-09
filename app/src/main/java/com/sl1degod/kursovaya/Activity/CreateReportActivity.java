@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -32,11 +33,13 @@ import com.sl1degod.kursovaya.Viewmodels.ViolationsViewModel;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.security.acl.Owner;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class CreateReportActivity extends AppCompatActivity {
 
@@ -68,16 +71,38 @@ public class CreateReportActivity extends AppCompatActivity {
         imageView = findViewById(R.id.setCreateReportImage);
         imageButton.setOnClickListener(e -> {
             Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            try{
-                startActivityForResult(takePhotoIntent, REQUEST_TAKE_PHOTO);
-            }catch (ActivityNotFoundException ex){
-                ex.printStackTrace();
+            if (takePhotoIntent.resolveActivity(getPackageManager()) != null) {
+                File photoFile = null;
+                try {
+                    photoFile = createImageFile();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                if (photoFile != null) {
+                    photoUri = FileProvider.getUriForFile(context,
+                            "com.example.android.fileprovider",
+                            photoFile);
+                    takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                    startActivityForResult(takePhotoIntent, REQUEST_TAKE_PHOTO);
+                }
             }
         });
         getViolations();
 
     }
 
+    private File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,
+                ".jpg",
+                storageDir
+        );
+        outputFileUri = Uri.fromFile(image);
+        return image;
+    }
     @SuppressLint("NotifyDataSetChanged")
     public void getViolations() {
         violationsViewModel.getListMutableLiveData().observe(this, violations -> {
@@ -108,11 +133,16 @@ public class CreateReportActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap thumbnailBitmap = (Bitmap) extras.get("data");
-            imageView.setImageBitmap(thumbnailBitmap);
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), outputFileUri);
+                imageView.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
+
+
 
 
 }

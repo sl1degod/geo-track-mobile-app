@@ -1,4 +1,5 @@
-
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
-    <external-path name="my_images" path="/storage/emulated/0/Android/data/com.sl1degod.kursovaya/files/Pictures/" />
+    <external-files-path
+        name="my_images"
+        path="Pictures/" />
 </paths>

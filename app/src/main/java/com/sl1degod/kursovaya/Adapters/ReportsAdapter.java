@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.sl1degod.kursovaya.App;
 import com.sl1degod.kursovaya.Models.Reports;
+import com.sl1degod.kursovaya.Network.RetrofitInstance;
 import com.sl1degod.kursovaya.R;
 import com.sl1degod.kursovaya.Viewmodels.ReportsViewModel;
 
@@ -79,7 +80,7 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.AdapterV
             object.setText(reports.getObject());
 
             Glide.with(context)
-                    .load(reports.getViolations_image())
+                    .load(RetrofitInstance.getRetrofitInstance().baseUrl() + "static/" + reports.getViolations_image())
                     .centerCrop()
                     .into(violations_image);
         }

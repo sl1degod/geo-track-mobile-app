@@ -1,17 +1,25 @@
 package com.sl1degod.kursovaya.Network;
 
 import com.sl1degod.kursovaya.Models.Objects;
+import com.sl1degod.kursovaya.Models.PostReports;
 import com.sl1degod.kursovaya.Models.ReportPoint;
 import com.sl1degod.kursovaya.Models.Reports;
+import com.sl1degod.kursovaya.Models.ReportsVio;
 import com.sl1degod.kursovaya.Models.Users;
 import com.sl1degod.kursovaya.Models.UsersProfile;
 import com.sl1degod.kursovaya.Models.Violations;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
+import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -40,4 +48,14 @@ public interface Routes {
     @GET("violations")
     @Headers({"Accept:application/json", "Content-Type:application/json"})
     Call<List<Violations>> getViolations();
+
+    @Multipart
+    @POST("reportsvio")
+    Call<ReportsVio> sendReportVio(@Part("user_id") int user_id,
+                                   @Part("violations_id") int violations_id,
+                                   @Part MultipartBody.Part image);
+
+    @POST("reports")
+    @Headers({"Accept:application/json", "Content-Type:application/json"})
+    Call<PostReports> sendReport(@Body PostReports postReports);
 }

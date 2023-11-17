@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.sl1degod.kursovaya.Activity.CreateReportActivity;
 import com.sl1degod.kursovaya.Adapters.ReportsAdapter;
 import com.sl1degod.kursovaya.App;
+import com.sl1degod.kursovaya.Models.PostReports;
 import com.sl1degod.kursovaya.Models.Reports;
 import com.sl1degod.kursovaya.R;
 import com.sl1degod.kursovaya.Viewmodels.ReportsViewModel;
@@ -51,6 +52,7 @@ public class HomeFragment extends Fragment {
         adapter = new ReportsAdapter(getContext());
         binding.rvReports.setAdapter(adapter);
         viewModel = new ViewModelProvider(this).get(ReportsViewModel.class);
+
         getAllReports();
 
         return binding.getRoot();

@@ -69,14 +69,12 @@ import java.util.Properties;
 
 public class MapFragment extends BottomSheetDialogFragment {
     MapView mapView;
-    public Context context;
 
-    public Reports reports1;
+    public Context context;
     private ReportsViewModel viewModel;
 
     private ObjectsViewModel objectsViewModel;
 
-    private ReportsAdapter adapter;
     List<Reports> reportsList = new ArrayList<>();
 
     List<Objects> objectsList = new ArrayList<>();
@@ -146,18 +144,6 @@ public class MapFragment extends BottomSheetDialogFragment {
         objectsViewModel.getObjects();
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    public void getObject(String id) {
-        objectsViewModel.getListMutableLiveData().observe(getViewLifecycleOwner(), objects -> {
-            if (objects == null) {
-                Toast.makeText(context, "Unluko", Toast.LENGTH_SHORT).show();
-            } else {
-//                objectsList = objects;
-            }
-        });
-        objectsViewModel.getObject(id);
-    }
-
 
 
     private void addPoints() {
@@ -190,6 +176,8 @@ public class MapFragment extends BottomSheetDialogFragment {
         set_object_map.setText(object.getName());
         set_latitude_map.setText(object.getLatitude());
         set_longitude_map.setText(object.getLongitude());
+        App.getInstance().setObject_id(object.getId());
+        System.out.println(App.getInstance().getObject_id());
         Glide.with(context)
                 .load(pathToImage + object.getUuid_image())
                 .centerCrop()

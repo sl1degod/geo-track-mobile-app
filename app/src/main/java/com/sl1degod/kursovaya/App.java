@@ -11,6 +11,8 @@ public class App extends Application {
 
     String user_id;
 
+    String object_id;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -32,5 +34,13 @@ public class App extends Application {
 
     public void setUser_id(String user_id) {
         this.user_id = user_id;
+    }
+
+    public String getObject_id() {
+        return object_id;
+    }
+
+    public void setObject_id(String object_id) {
+        this.object_id = object_id;
     }
 }

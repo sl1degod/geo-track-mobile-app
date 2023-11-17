@@ -2,44 +2,47 @@ package com.sl1degod.kursovaya.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
-import android.content.ActivityNotFoundException;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.sl1degod.kursovaya.Models.Reports;
+import com.sl1degod.kursovaya.App;
+import com.sl1degod.kursovaya.Fragments.MapFragment;
+import com.sl1degod.kursovaya.Models.PostReports;
+import com.sl1degod.kursovaya.Models.ReportsVio;
 import com.sl1degod.kursovaya.Models.Violations;
 import com.sl1degod.kursovaya.R;
-import com.sl1degod.kursovaya.Viewmodels.ObjectsViewModel;
+import com.sl1degod.kursovaya.Viewmodels.ReportsViewModel;
 import com.sl1degod.kursovaya.Viewmodels.ViolationsViewModel;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.security.acl.Owner;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 public class CreateReportActivity extends AppCompatActivity {
 
@@ -47,17 +50,25 @@ public class CreateReportActivity extends AppCompatActivity {
 
     ImageView imageView;
 
+    Button sendReport;
+
     private Uri outputFileUri;
     private ViolationsViewModel violationsViewModel;
+    private ReportsViewModel reportsViewModel;
 
     Spinner spinner;
 
     private Uri photoUri;
 
     List<Violations> violationsList = new ArrayList<>();
+
+    List<ReportsVio> reportsVioList = new ArrayList<>();
     Context context;
 
-    private static final int TAKE_PICTURE_REQUEST = 1;
+    private File image = null;
+    private String imageFileName = "";
+
+    public int rep_vio_id;
     private static final int REQUEST_TAKE_PHOTO = 1;
 
     @Override
@@ -66,9 +77,11 @@ public class CreateReportActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_report);
         context = getApplicationContext();
         violationsViewModel = new ViewModelProvider(this).get(ViolationsViewModel.class);
+        reportsViewModel = new ViewModelProvider(this).get(ReportsViewModel.class);
         spinner = findViewById(R.id.violations_spinner);
         imageButton = findViewById(R.id.addReportImage);
         imageView = findViewById(R.id.setCreateReportImage);
+        sendReport = findViewById(R.id.sendReport);
         imageButton.setOnClickListener(e -> {
             Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if (takePhotoIntent.resolveActivity(getPackageManager()) != null) {
@@ -87,15 +100,26 @@ public class CreateReportActivity extends AppCompatActivity {
                 }
             }
         });
+        sendReport.setOnClickListener(e -> {
+            if (image == null) {
+                Toast.makeText(context, "Пожалуйста, сделайте фото", Toast.LENGTH_SHORT).show();
+            } else {
+                RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), image);
+                MultipartBody.Part body = MultipartBody.Part.createFormData("image", imageFileName + ".jpg", requestFile);
+                postReportVio(App.getInstance().getUser_id(), String.valueOf(spinner.getSelectedItemId() + 1), body);
+            }
+
+        });
+
         getViolations();
 
     }
 
     private File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
+        imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
+        image = File.createTempFile(
                 imageFileName,
                 ".jpg",
                 storageDir
@@ -126,6 +150,34 @@ public class CreateReportActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void postReportVio(String user_id, String violations_id, MultipartBody.Part requestBody) {
+        reportsViewModel.getPostReportVio().observe(this, report -> {
+            if (report == null) {
+                Toast.makeText(context, "Unluko", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(context, "all good", Toast.LENGTH_SHORT).show();
+                rep_vio_id = report.getId();
+                PostReports postReports = new PostReports(Integer.parseInt(App.getInstance().getUser_id()), rep_vio_id,
+                        Integer.parseInt(App.getInstance().getObject_id()));
+                postReport(postReports);
+                System.out.println(rep_vio_id);
+            }
+        });
+        reportsViewModel.postReportVio(Integer.parseInt(user_id), Integer.parseInt(violations_id), requestBody);
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void postReport(PostReports postReports) {
+        reportsViewModel.getPostReport().observe(this, report -> {
+            if (report == null) {
+                Toast.makeText(context, "Unluko", Toast.LENGTH_SHORT).show();
+            } else {
+            }
+        });
+        reportsViewModel.postReport(postReports);
     }
 
     @Override

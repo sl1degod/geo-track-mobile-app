@@ -13,7 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.sl1degod.kursovaya.App;
+import com.sl1degod.kursovaya.Fragments.HomeFragment;
+import com.sl1degod.kursovaya.Models.ReportCurrent;
 import com.sl1degod.kursovaya.Models.Reports;
 import com.sl1degod.kursovaya.Network.RetrofitInstance;
 import com.sl1degod.kursovaya.R;
@@ -24,8 +27,9 @@ import java.util.List;
 
 public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.AdapterViewHolder> {
 
-
     List<Reports> reportsList = new ArrayList<>();
+
+    ReportCurrent reportCurrent;
     Context context;
 
     private ReportsViewModel viewModel;
@@ -51,8 +55,26 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.AdapterV
     @Override
     public void onBindViewHolder(@NonNull AdapterViewHolder holder, int position) {
         holder.bind(reportsList.get(position));
+//        new HomeFragment().getReport(position);
+//
+//        holder.itemView.setOnClickListener(v -> {
+//            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
+//            bottomSheetDialog.setContentView(R.layout.bottomsheetreport);
+//            TextView fio = bottomSheetDialog.findViewById(R.id.set_fio_report);
+//            TextView violations = bottomSheetDialog.findViewById(R.id.set_violations_report);
+//            ImageView reportImage = bottomSheetDialog.findViewById(R.id.setImageReport);
+//
+//            fio.setText(reportCurrent.getFio());
+//            violations.setText(reportCurrent.getName());
+//
+//            Glide.with(context)
+//                    .load(RetrofitInstance.getRetrofitInstance().baseUrl() + "static/reports" + reportCurrent.getImage())
+//                    .centerCrop()
+//                    .into(reportImage);
+//
+//            bottomSheetDialog.show();
+//        });
     }
-
 
     @Override
     public int getItemCount() {

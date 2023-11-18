@@ -13,6 +13,8 @@ public class App extends Application {
 
     String object_id;
 
+    int report_id;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -42,5 +44,13 @@ public class App extends Application {
 
     public void setObject_id(String object_id) {
         this.object_id = object_id;
+    }
+
+    public int getReport_id() {
+        return report_id;
+    }
+
+    public void setReport_id(int report_id) {
+        this.report_id = report_id;
     }
 }

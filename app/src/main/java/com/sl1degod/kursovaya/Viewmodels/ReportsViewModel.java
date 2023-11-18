@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.sl1degod.kursovaya.Models.PostReports;
+import com.sl1degod.kursovaya.Models.ReportCurrent;
 import com.sl1degod.kursovaya.Models.Reports;
 import com.sl1degod.kursovaya.Models.ReportsVio;
 import com.sl1degod.kursovaya.Network.RetrofitInstance;
@@ -24,6 +25,11 @@ public class ReportsViewModel extends ViewModel {
     MutableLiveData <List<Reports>> listMutableLiveData = new MutableLiveData<>();
     MutableLiveData <ReportsVio> postReportVio = new MutableLiveData<>();
     MutableLiveData <PostReports> postReport = new MutableLiveData<>();
+    MutableLiveData <Reports> reportCurrentMutableLiveData = new MutableLiveData<>();
+
+    public MutableLiveData<Reports> getReportCurrentMutableLiveData() {
+        return reportCurrentMutableLiveData;
+    }
 
     public MutableLiveData<PostReports> getPostReport() {
         return postReport;
@@ -57,6 +63,26 @@ public class ReportsViewModel extends ViewModel {
             @Override
             public void onFailure(@NonNull Call<List<Reports>> call, @NonNull Throwable t) {
                 listMutableLiveData.postValue(null);
+            }
+        });
+    }
+
+    public void getReport(int id) {
+        Routes routes = RetrofitInstance.getRetrofitInstance().create(Routes.class);
+        Call<Reports> call = routes.getReport(id);
+        call.enqueue(new Callback<Reports>() {
+            @Override
+            public void onResponse(@NonNull Call<Reports> call, @NonNull Response<Reports> response) {
+                if (response.isSuccessful()) {
+                    reportCurrentMutableLiveData.postValue(response.body());
+                    Log.d("TAG", "onResponse: " + response.body());
+                } else {
+                    reportCurrentMutableLiveData.postValue(null);
+                }
+            }
+            @Override
+            public void onFailure(@NonNull Call<Reports> call, @NonNull Throwable t) {
+                reportCurrentMutableLiveData.postValue(null);
             }
         });
     }

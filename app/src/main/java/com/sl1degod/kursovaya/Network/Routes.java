@@ -2,6 +2,7 @@ package com.sl1degod.kursovaya.Network;
 
 import com.sl1degod.kursovaya.Models.Objects;
 import com.sl1degod.kursovaya.Models.PostReports;
+import com.sl1degod.kursovaya.Models.ReportCurrent;
 import com.sl1degod.kursovaya.Models.ReportPoint;
 import com.sl1degod.kursovaya.Models.Reports;
 import com.sl1degod.kursovaya.Models.ReportsVio;
@@ -36,6 +37,10 @@ public interface Routes {
     @GET("reports")
     @Headers({"Accept:application/json", "Content-Type:application/json"})
     Call<List<Reports>> getAllReports();
+
+    @GET("reports/{id}")
+    @Headers({"Accept:application/json", "Content-Type:application/json"})
+    Call<Reports> getReport(@Path("id") int id);
 
     @GET("objects/{id}")
     @Headers({"Accept:application/json", "Content-Type:application/json"})

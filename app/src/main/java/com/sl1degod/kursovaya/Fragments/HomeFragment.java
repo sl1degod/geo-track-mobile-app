@@ -16,26 +16,33 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.sl1degod.kursovaya.Activity.CreateReportActivity;
 import com.sl1degod.kursovaya.Adapters.ReportsAdapter;
 import com.sl1degod.kursovaya.App;
 import com.sl1degod.kursovaya.Models.PostReports;
+import com.sl1degod.kursovaya.Models.ReportCurrent;
 import com.sl1degod.kursovaya.Models.Reports;
+import com.sl1degod.kursovaya.Network.RetrofitInstance;
 import com.sl1degod.kursovaya.R;
 import com.sl1degod.kursovaya.Viewmodels.ReportsViewModel;
 import com.sl1degod.kursovaya.databinding.FragmentHomeBinding;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment {
     private ReportsViewModel viewModel;
     private ReportsAdapter adapter;
     App app;
 
-    List<Reports> reportsList = new ArrayList<>();
+    Reports reportCurrent;
 
     Reports reports;
 
@@ -66,10 +73,25 @@ public class HomeFragment extends Fragment {
             } else {
                 adapter.setReportsList(reports);
                 adapter.notifyDataSetChanged();
+//                getReport(1);
             }
         });
         viewModel.getAllReports();
     }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void getReport(int id) {
+        viewModel.getReportCurrentMutableLiveData().observe(getViewLifecycleOwner(), report -> {
+            if (report == null) {
+                Toast.makeText(context, "Unluko", Toast.LENGTH_SHORT).show();
+            } else {
+                reportCurrent = report;
+            }
+        });
+        viewModel.getReport(id);
+    }
+
+
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {

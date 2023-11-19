@@ -50,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
                 result = true;
                 loginTIL.setErrorEnabled(false);
                 passwordTIL.setErrorEnabled(false);
-                getUser(loginTIED.getText().toString(), passwordTIED.getText().toString());
+                getUser(loginTIED.getText().toString().trim(), passwordTIED.getText().toString().trim());
             }
         });
 

@@ -83,8 +83,6 @@ public class MapFragment extends BottomSheetDialogFragment {
 
     ImageProvider icon;
 
-    String pathToImage = RetrofitInstance.getRetrofitInstance().baseUrl() + "objects/image/";
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -171,15 +169,17 @@ public class MapFragment extends BottomSheetDialogFragment {
         TextView set_object_map = bottomSheetDialog.findViewById(R.id.set_object_map);
         TextView set_latitude_map = bottomSheetDialog.findViewById(R.id.set_latitude_map);
         TextView set_longitude_map = bottomSheetDialog.findViewById(R.id.set_longitude_map);
+        TextView set_count = bottomSheetDialog.findViewById(R.id.set_count_map);
         ImageView setImageMap = bottomSheetDialog.findViewById(R.id.setImageMap);
         Button sendReport = bottomSheetDialog.findViewById(R.id.button_create_report);
         set_object_map.setText(object.getName());
         set_latitude_map.setText(object.getLatitude());
         set_longitude_map.setText(object.getLongitude());
+        set_count.setText(object.getCount());
         App.getInstance().setObject_id(object.getId());
         System.out.println(App.getInstance().getObject_id());
         Glide.with(context)
-                .load(pathToImage + object.getUuid_image())
+                .load(RetrofitInstance.getRetrofitInstance().baseUrl() + "static/objects/" + object.getUuid_image() + ".jpg")
                 .centerCrop()
                 .into(setImageMap);
 
@@ -209,7 +209,7 @@ public class MapFragment extends BottomSheetDialogFragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.menu_toolbar, menu);
-//        menu.setGroupVisible(R.id.homeGroup, false);
+        menu.setGroupVisible(R.id.homeGroup, false);
 
         super.onCreateOptionsMenu(menu, inflater);
     }

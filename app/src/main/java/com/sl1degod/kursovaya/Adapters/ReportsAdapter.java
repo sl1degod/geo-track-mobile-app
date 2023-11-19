@@ -34,8 +34,9 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.AdapterV
 
     private ReportsViewModel viewModel;
 
-    public ReportsAdapter(Context context) {
+    public ReportsAdapter(Context context, List<Reports> reportsList) {
         this.context = context;
+        this.reportsList = reportsList;
     }
 
     public List<Reports> getReportsList() {
@@ -50,6 +51,11 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.AdapterV
     @Override
     public AdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new AdapterViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_report_model, parent, false));
+    }
+
+    public void setFilteredList(ArrayList<Reports> filteredList) {
+        this.reportsList = filteredList;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -83,7 +89,7 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.AdapterV
 
     public class AdapterViewHolder extends RecyclerView.ViewHolder {
 
-        TextView id, FIO, violations, object;
+        TextView id, FIO, violations, object, date, time;
         ImageView violations_image;
 
         public AdapterViewHolder(@NonNull View itemView) {
@@ -93,6 +99,8 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.AdapterV
             violations = itemView.findViewById(R.id.set_name_report);
             object = itemView.findViewById(R.id.set_object);
             violations_image = itemView.findViewById(R.id.setReportImage);
+            date = itemView.findViewById(R.id.set_date_report);
+            time = itemView.findViewById(R.id.set_time_report);
         }
 
         public void bind(Reports reports) {
@@ -100,9 +108,11 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.AdapterV
             FIO.setText(reports.getFio());
             violations.setText(reports.getViolations());
             object.setText(reports.getObject());
+            date.setText(reports.getDate().substring(0, 10));
+            time.setText(reports.getTime().substring(0, 5));
 
             Glide.with(context)
-                    .load(RetrofitInstance.getRetrofitInstance().baseUrl() + "static/" + reports.getViolations_image())
+                    .load(RetrofitInstance.getRetrofitInstance().baseUrl() + "static/reports/" + reports.getViolations_image())
                     .centerCrop()
                     .into(violations_image);
         }

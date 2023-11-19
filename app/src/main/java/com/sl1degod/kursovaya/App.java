@@ -2,7 +2,10 @@ package com.sl1degod.kursovaya;
 
 import android.app.Application;
 
+import com.sl1degod.kursovaya.Models.Violations;
 import com.yandex.mapkit.MapKitFactory;
+
+import java.util.List;
 
 public class App extends Application {
 
@@ -14,6 +17,8 @@ public class App extends Application {
     String object_id;
 
     int report_id;
+
+    List<Violations> violationsList;
 
     @Override
     public void onCreate() {
@@ -46,11 +51,12 @@ public class App extends Application {
         this.object_id = object_id;
     }
 
-    public int getReport_id() {
-        return report_id;
+
+    public List<Violations> getViolationsList() {
+        return violationsList;
     }
 
-    public void setReport_id(int report_id) {
-        this.report_id = report_id;
+    public void setViolationsList(List<Violations> violationsList) {
+        this.violationsList = violationsList;
     }
 }

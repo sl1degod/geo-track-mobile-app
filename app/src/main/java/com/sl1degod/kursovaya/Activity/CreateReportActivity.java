@@ -60,9 +60,8 @@ public class CreateReportActivity extends AppCompatActivity {
 
     private Uri photoUri;
 
-    List<Violations> violationsList = new ArrayList<>();
+    private List<Violations> violationsList = new ArrayList<>();
 
-    List<ReportsVio> reportsVioList = new ArrayList<>();
     Context context;
 
     private File image = null;
@@ -110,7 +109,6 @@ public class CreateReportActivity extends AppCompatActivity {
             }
 
         });
-
         getViolations();
 
     }
@@ -140,7 +138,7 @@ public class CreateReportActivity extends AppCompatActivity {
         violationsViewModel.getViolations();
     }
 
-    private void initSpinner() {
+    public void initSpinner() {
         List<String> violationsNames = new ArrayList<>();
         for (Violations violation : violationsList) {
             violationsNames.add(violation.getName());
@@ -149,7 +147,6 @@ public class CreateReportActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, violationsNames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -163,7 +160,8 @@ public class CreateReportActivity extends AppCompatActivity {
                 PostReports postReports = new PostReports(Integer.parseInt(App.getInstance().getUser_id()), rep_vio_id,
                         Integer.parseInt(App.getInstance().getObject_id()));
                 postReport(postReports);
-                System.out.println(rep_vio_id);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
             }
         });
         reportsViewModel.postReportVio(Integer.parseInt(user_id), Integer.parseInt(violations_id), requestBody);

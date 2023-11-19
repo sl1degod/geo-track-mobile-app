@@ -86,12 +86,39 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/lin2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rel1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Количество нарушений"
+            android:textColor="@color/gray_200" />
+
+        <TextView
+            android:id="@+id/set_count_map"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textSize="18sp"
+            android:text="Кол-во"
+            android:textColor="@color/gray_500" />
+
+    </LinearLayout>
+
 
     <ImageView
         android:id="@+id/setImageMap"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:layout_below="@id/rel1"
+        android:layout_below="@id/lin2"
         android:background="@drawable/background_map_image" />
 
     <Button

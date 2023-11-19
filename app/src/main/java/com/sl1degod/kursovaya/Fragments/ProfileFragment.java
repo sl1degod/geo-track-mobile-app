@@ -104,7 +104,7 @@ public class ProfileFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.menu_toolbar, menu);
-//        menu.setGroupVisible(R.id.homeGroup, false);
+        menu.setGroupVisible(R.id.homeGroup, false);
 
         super.onCreateOptionsMenu(menu, inflater);
     }

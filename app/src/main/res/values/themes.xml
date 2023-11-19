@@ -24,4 +24,17 @@
         <item name="android:layout_height">?attr/actionBarSize</item>
         <item name="android:background">@color/gray_500</item>
     </style>
+
+    <style name="myMaterialCalendarHeaderToggleButton" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="materialCalendarStyle">@style/Widget.MaterialComponents.MaterialCalendar</item>
+        <item name="materialCalendarFullscreenTheme">
+            @style/ThemeOverlay.MaterialComponents.MaterialCalendar.Fullscreen
+        </item>
+        <item name="materialCalendarTheme">
+            @style/ThemeOverlay.MaterialComponents.MaterialCalendar
+        </item>
+        <item name="materialCalendarHeaderToggleButton">
+            @style/Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton
+        </item>
+    </style>
 </resources>

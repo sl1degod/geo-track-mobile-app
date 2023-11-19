@@ -7,26 +7,79 @@
     android:padding="10dp">
 
     <LinearLayout
+        android:id="@+id/lin1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp">
+        android:orientation="horizontal"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="25dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:textColor="@color/gray_500"
             android:textSize="16sp"
-            android:text="Выберите тип нарушения"/>
+            android:text="Нарушение"/>
 
         <Spinner
             android:id="@+id/filter_violations_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lin2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/lin1"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="25dp">
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="Объект"
+            android:textColor="@color/gray_500"
+            android:textSize="16sp" />
+
+        <Spinner
+            android:id="@+id/filter_object_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lin2"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="25dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/dateInterval"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="Интервал"
+            android:textColor="@color/gray_500"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/setStartDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" "
+            android:layout_marginStart="20dp"
+            android:textColor="@color/gray_500"
+            android:textSize="16sp" />
+
 
     </LinearLayout>
 
@@ -48,7 +101,6 @@
             android:text="Отмена"
             android:textAllCaps="false"
             android:background="@color/white"
-
             android:textColor="@color/gray_500"
             android:textSize="18sp" />
 

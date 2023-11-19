@@ -3,12 +3,12 @@ package com.sl1degod.kursovaya.Fragments;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,36 +21,37 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.sl1degod.kursovaya.Activity.CreateReportActivity;
+import com.google.android.material.datepicker.MaterialDatePicker;
 import com.sl1degod.kursovaya.Adapters.ReportsAdapter;
 import com.sl1degod.kursovaya.App;
-import com.sl1degod.kursovaya.Models.PostReports;
-import com.sl1degod.kursovaya.Models.ReportCurrent;
+import com.sl1degod.kursovaya.Models.Objects;
 import com.sl1degod.kursovaya.Models.Reports;
 import com.sl1degod.kursovaya.Models.Violations;
-import com.sl1degod.kursovaya.Network.RetrofitInstance;
 import com.sl1degod.kursovaya.R;
+import com.sl1degod.kursovaya.Viewmodels.ObjectsViewModel;
 import com.sl1degod.kursovaya.Viewmodels.ReportsViewModel;
 import com.sl1degod.kursovaya.Viewmodels.ViolationsViewModel;
 import com.sl1degod.kursovaya.databinding.FragmentHomeBinding;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 public class HomeFragment extends Fragment {
     private ReportsViewModel viewModel;
     private ReportsAdapter adapter;
 
     private ViolationsViewModel violationsViewModel;
+
+    private ObjectsViewModel objectsViewModel;
+
     App app;
 
     Reports reportCurrent;
@@ -62,10 +63,16 @@ public class HomeFragment extends Fragment {
 
     List<Reports> reportsList = new ArrayList<>();
 
-    Spinner spinner;
+    Spinner spinnerVio;
+    Spinner spinnerObj;
+
+    Long startDateFilter;
+    Long endDateFilter;
 
     private List<Violations> violationsList = new ArrayList<>();
+    private List<Objects> objectsList = new ArrayList<>();
 
+    TextView dateStart, dateInterval;
 
     private Dialog dialog;
 
@@ -80,8 +87,10 @@ public class HomeFragment extends Fragment {
         binding.rvReports.setAdapter(adapter);
         viewModel = new ViewModelProvider(this).get(ReportsViewModel.class);
         violationsViewModel = new ViewModelProvider(this).get(ViolationsViewModel.class);
+        objectsViewModel = new ViewModelProvider(this).get(ObjectsViewModel.class);
         dialog = new Dialog(context);
         getViolations();
+        getObjects();
         getAllReports();
         return binding.getRoot();
     }
@@ -124,6 +133,18 @@ public class HomeFragment extends Fragment {
         violationsViewModel.getViolations();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    public void getObjects() {
+        objectsViewModel.getListMutableLiveData().observe(getViewLifecycleOwner(), objects -> {
+            if (objects == null) {
+                Toast.makeText(context, "Unluko", Toast.LENGTH_SHORT).show();
+            } else {
+                objectsList = objects;
+            }
+        });
+        objectsViewModel.getObjects();
+    }
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         menu.clear();
@@ -153,17 +174,23 @@ public class HomeFragment extends Fragment {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setCancelable(false);
 
-        spinner = dialog.findViewById(R.id.filter_violations_spinner);
+        spinnerVio = dialog.findViewById(R.id.filter_violations_spinner);
+        spinnerObj = dialog.findViewById(R.id.filter_object_spinner);
         Button complete_button = dialog.findViewById(R.id.button_ready);
         Button cancel_button = dialog.findViewById(R.id.button_cancel);
-        initSpinner(spinner);
+        dateInterval = dialog.findViewById(R.id.dateInterval);
+        dateStart = dialog.findViewById(R.id.setStartDate);
+        dateInterval.setOnClickListener(e -> {
+            showDateRangePicker();
+        });
+        initVioSpinner(spinnerVio);
+        initObjectSpinner(spinnerObj);
 
         complete_button.setOnClickListener(v -> {
-            if (spinner.getSelectedItem().toString().equals("Не выбрано")) {
+            if (spinnerVio.getSelectedItem().toString().equals("Не выбрано") && spinnerObj.getSelectedItem().equals("Не выбрано")) {
                 getAllReports();
             } else {
-                filterByViolation(spinner.getSelectedItem().toString());
-
+                filter();
             }
             dialog.hide();
 
@@ -171,24 +198,78 @@ public class HomeFragment extends Fragment {
 
         cancel_button.setOnClickListener(v -> {
             dialog.cancel();
-
+            getAllReports();
         });
-
         dialog.show();
     }
 
-    private void filterByViolation(String word) {
-        ArrayList<Reports> filteredList = new ArrayList<>();
-        for (int i = 0; i < reportsList.size(); i++) {
-            if (reportsList.get(i).getViolations().contains(word)) {
-                filteredList.add(reportsList.get(i));
-            }
-        }
-            adapter.setFilteredList(filteredList);
+    private void showDateRangePicker() {
+        MaterialDatePicker<Pair<Long, Long>> materialDatePicker = MaterialDatePicker.Builder.dateRangePicker()
+                .setTitleText("Выберите диапазон дат")
+                .setTheme(R.style.myMaterialCalendarHeaderToggleButton)
+                .build();
 
+        materialDatePicker.addOnPositiveButtonClickListener(selection -> {
+            String startDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date(selection.first));
+            String endDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date(selection.second));
+            dateStart.setText(startDate + " - " + endDate);
+        });
+        materialDatePicker.show(getParentFragmentManager(), "MaterialDateRangePicker");
     }
 
-    public void initSpinner(Spinner spinner) {
+    private void filter() {
+        ArrayList<Reports> filteredList = new ArrayList<>();
+        String selectedViolation = spinnerVio.getSelectedItem().toString();
+        String selectedObject = spinnerObj.getSelectedItem().toString();
+        for (Reports report : reportsList) {
+            if (report.getViolations() != null && report.getObject() != null) {
+                if (spinnerVio.getSelectedItem().equals("Не выбрано") && !spinnerObj.getSelectedItem().equals("Не выбрано") &&
+                        report.getObject().contains(selectedObject)) {
+                    filteredList.add(report);
+                } else if (!spinnerVio.getSelectedItem().equals("Не выбрано") && spinnerObj.getSelectedItem().equals("Не выбрано") &&
+                        report.getViolations().contains(selectedViolation)) {
+                    filteredList.add(report);
+                } else if (!spinnerVio.getSelectedItem().equals("Не выбрано") && !spinnerObj.getSelectedItem().equals("Не выбрано") &&
+                        report.getViolations().contains(selectedViolation) && report.getObject().contains(selectedObject)) {
+                    filteredList.add(report);
+                }
+            }
+        }
+
+        adapter.setFilteredList(filteredList);
+    }
+
+//    private void filter() throws ParseException {
+//        ArrayList<Reports> filteredList = new ArrayList<>();
+//        String selectedViolation = spinnerVio.getSelectedItem().toString();
+//        String selectedObject = spinnerObj.getSelectedItem().toString();
+//        Pair<Long, Long> selectedDateRange = new Pair<>(startDateFilter, endDateFilter);
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        for (Reports report : reportsList) {
+//            Date reportDate = sdf.parse(report.getDate().substring(0, 10));
+//            long reportTime = reportDate.getDate();
+//            if (report.getViolations() != null && report.getObject() != null) {
+//                if (spinnerVio.getSelectedItem().equals("Не выбрано") && !spinnerObj.getSelectedItem().equals("Не выбрано") &&
+//                        report.getObject().contains(selectedObject) && isWithinDateRange(reportTime, selectedDateRange)) {
+//                    filteredList.add(report);
+//                } else if (!spinnerVio.getSelectedItem().equals("Не выбрано") && spinnerObj.getSelectedItem().equals("Не выбрано") &&
+//                        report.getViolations().contains(selectedViolation) && isWithinDateRange(reportTime, selectedDateRange)) {
+//                    filteredList.add(report);
+//                } else if (!spinnerVio.getSelectedItem().equals("Не выбрано") && !spinnerObj.getSelectedItem().equals("Не выбрано") &&
+//                        report.getViolations().contains(selectedViolation) && report.getObject().contains(selectedObject) && isWithinDateRange(reportTime, selectedDateRange)) {
+//                    filteredList.add(report);
+//                }
+//            }
+//        }
+//
+//        adapter.setFilteredList(filteredList);
+//    }
+//
+//    private boolean isWithinDateRange(long date, Pair<Long, Long> dateRange) {
+//        return date >= dateRange.first && date <= dateRange.second;
+//    }
+
+    public void initVioSpinner(Spinner spinnerVio) {
         List<String> violationsNames = new ArrayList<>();
         violationsNames.add("Не выбрано");
         for (Violations violation : violationsList) {
@@ -197,6 +278,19 @@ public class HomeFragment extends Fragment {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, violationsNames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        spinnerVio.setAdapter(adapter);
+    }
+
+    public void initObjectSpinner(Spinner spinnerObj) {
+        List<String> objectsNames = new ArrayList<>();
+        objectsNames.add("Не выбрано");
+        for (Objects objects : objectsList) {
+            objectsNames.add(objects.getName());
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, objectsNames);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerObj.setAdapter(adapter);
+
     }
 }

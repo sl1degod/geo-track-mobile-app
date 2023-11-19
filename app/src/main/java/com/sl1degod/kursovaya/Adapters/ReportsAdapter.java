@@ -94,7 +94,7 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.AdapterV
 
         public AdapterViewHolder(@NonNull View itemView) {
             super(itemView);
-            id = itemView.findViewById(R.id.set_report_id);
+//            id = itemView.findViewById(R.id.set_report_id);
             FIO = itemView.findViewById(R.id.set_report_fio);
             violations = itemView.findViewById(R.id.set_name_report);
             object = itemView.findViewById(R.id.set_object);
@@ -104,12 +104,13 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.AdapterV
         }
 
         public void bind(Reports reports) {
-            id.setText(reports.getId());
+//            id.setText(reports.getId());
             FIO.setText(reports.getFio());
             violations.setText(reports.getViolations());
             object.setText(reports.getObject());
             date.setText(reports.getDate().substring(0, 10));
             time.setText(reports.getTime().substring(0, 5));
+            System.out.println(reports.getObject());
 
             Glide.with(context)
                     .load(RetrofitInstance.getRetrofitInstance().baseUrl() + "static/reports/" + reports.getViolations_image())

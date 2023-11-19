@@ -10,21 +10,12 @@
         android:layout_height="50dp"
         android:layout_margin="5dp"/>
 
-    <TextView
-        android:id="@+id/set_report_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="id"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="70dp"
-        android:textSize="16sp"
-        android:textColor="@color/black"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginStart="100dp"
+        android:layout_marginStart="75dp"
         android:layout_marginTop="10dp">
         <TextView
             android:id="@+id/set_name_report"
@@ -50,7 +41,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="object"
-        android:layout_gravity="center"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="200dp"
         android:textSize="16sp"
         android:textColor="@color/black"/>
 
@@ -58,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginStart="250dp"
+        android:layout_marginStart="300dp"
         android:layout_marginTop="10dp">
         <TextView
             android:id="@+id/set_time_report"

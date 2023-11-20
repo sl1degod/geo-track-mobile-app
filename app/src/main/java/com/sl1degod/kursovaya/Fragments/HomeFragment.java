@@ -190,7 +190,11 @@ public class HomeFragment extends Fragment {
             if (spinnerVio.getSelectedItem().toString().equals("Не выбрано") && spinnerObj.getSelectedItem().equals("Не выбрано")) {
                 getAllReports();
             } else {
-                filter();
+                try {
+                    filter();
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
             }
             dialog.hide();
 
@@ -217,20 +221,46 @@ public class HomeFragment extends Fragment {
         materialDatePicker.show(getParentFragmentManager(), "MaterialDateRangePicker");
     }
 
-    private void filter() {
+//    private void filter() {
+//        ArrayList<Reports> filteredList = new ArrayList<>();
+//        String selectedViolation = spinnerVio.getSelectedItem().toString();
+//        String selectedObject = spinnerObj.getSelectedItem().toString();
+//        for (Reports report : reportsList) {
+//            if (report.getViolations() != null && report.getObject() != null) {
+//                if (spinnerVio.getSelectedItem().equals("Не выбрано") && !spinnerObj.getSelectedItem().equals("Не выбрано") &&
+//                        report.getObject().contains(selectedObject)) {
+//                    filteredList.add(report);
+//                } else if (!spinnerVio.getSelectedItem().equals("Не выбрано") && spinnerObj.getSelectedItem().equals("Не выбрано") &&
+//                        report.getViolations().contains(selectedViolation)) {
+//                    filteredList.add(report);
+//                } else if (!spinnerVio.getSelectedItem().equals("Не выбрано") && !spinnerObj.getSelectedItem().equals("Не выбрано") &&
+//                        report.getViolations().contains(selectedViolation) && report.getObject().contains(selectedObject)) {
+//                    filteredList.add(report);
+//                }
+//            }
+//        }
+//
+//        adapter.setFilteredList(filteredList);
+//    }
+
+    private void filter() throws ParseException {
         ArrayList<Reports> filteredList = new ArrayList<>();
         String selectedViolation = spinnerVio.getSelectedItem().toString();
         String selectedObject = spinnerObj.getSelectedItem().toString();
+        Pair<Long, Long> selectedDateRange = new Pair<>(startDateFilter, endDateFilter);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         for (Reports report : reportsList) {
+            Date reportDate = sdf.parse(report.getDate().substring(0, 10));
+            long reportTime = reportDate.getTime();
             if (report.getViolations() != null && report.getObject() != null) {
                 if (spinnerVio.getSelectedItem().equals("Не выбрано") && !spinnerObj.getSelectedItem().equals("Не выбрано") &&
-                        report.getObject().contains(selectedObject)) {
+                        report.getObject().contains(selectedObject) && isWithinDateRange(reportTime, selectedDateRange)) {
                     filteredList.add(report);
                 } else if (!spinnerVio.getSelectedItem().equals("Не выбрано") && spinnerObj.getSelectedItem().equals("Не выбрано") &&
-                        report.getViolations().contains(selectedViolation)) {
+                        report.getViolations().contains(selectedViolation) && isWithinDateRange(reportTime, selectedDateRange)) {
                     filteredList.add(report);
                 } else if (!spinnerVio.getSelectedItem().equals("Не выбрано") && !spinnerObj.getSelectedItem().equals("Не выбрано") &&
-                        report.getViolations().contains(selectedViolation) && report.getObject().contains(selectedObject)) {
+                        report.getViolations().contains(selectedViolation) && report.getObject().contains(selectedObject) && isWithinDateRange(reportTime, selectedDateRange)) {
                     filteredList.add(report);
                 }
             }
@@ -239,35 +269,9 @@ public class HomeFragment extends Fragment {
         adapter.setFilteredList(filteredList);
     }
 
-//    private void filter() throws ParseException {
-//        ArrayList<Reports> filteredList = new ArrayList<>();
-//        String selectedViolation = spinnerVio.getSelectedItem().toString();
-//        String selectedObject = spinnerObj.getSelectedItem().toString();
-//        Pair<Long, Long> selectedDateRange = new Pair<>(startDateFilter, endDateFilter);
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//        for (Reports report : reportsList) {
-//            Date reportDate = sdf.parse(report.getDate().substring(0, 10));
-//            long reportTime = reportDate.getDate();
-//            if (report.getViolations() != null && report.getObject() != null) {
-//                if (spinnerVio.getSelectedItem().equals("Не выбрано") && !spinnerObj.getSelectedItem().equals("Не выбрано") &&
-//                        report.getObject().contains(selectedObject) && isWithinDateRange(reportTime, selectedDateRange)) {
-//                    filteredList.add(report);
-//                } else if (!spinnerVio.getSelectedItem().equals("Не выбрано") && spinnerObj.getSelectedItem().equals("Не выбрано") &&
-//                        report.getViolations().contains(selectedViolation) && isWithinDateRange(reportTime, selectedDateRange)) {
-//                    filteredList.add(report);
-//                } else if (!spinnerVio.getSelectedItem().equals("Не выбрано") && !spinnerObj.getSelectedItem().equals("Не выбрано") &&
-//                        report.getViolations().contains(selectedViolation) && report.getObject().contains(selectedObject) && isWithinDateRange(reportTime, selectedDateRange)) {
-//                    filteredList.add(report);
-//                }
-//            }
-//        }
-//
-//        adapter.setFilteredList(filteredList);
-//    }
-//
-//    private boolean isWithinDateRange(long date, Pair<Long, Long> dateRange) {
-//        return date >= dateRange.first && date <= dateRange.second;
-//    }
+    private boolean isWithinDateRange(long date, Pair<Long, Long> dateRange) {
+        return date >= dateRange.first && date <= dateRange.second;
+    }
 
     public void initVioSpinner(Spinner spinnerVio) {
         List<String> violationsNames = new ArrayList<>();

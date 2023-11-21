@@ -1,16 +1,7 @@
 package com.sl1degod.kursovaya.Models;
 
 public class Objects {
-    String id, name, latitude, longitude, uuid_image, count;
-
-    public Objects(String id, String name, String latitude, String longitude, String uuid_image, String count) {
-        this.id = id;
-        this.name = name;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.uuid_image = uuid_image;
-        this.count = count;
-    }
+    String id, name, latitude, longitude, uuid_image, count, fio;
 
     public String getId() {
         return id;
@@ -58,5 +49,13 @@ public class Objects {
 
     public void setCount(String count) {
         this.count = count;
+    }
+
+    public String getFio() {
+        return fio;
+    }
+
+    public void setFio(String fio) {
+        this.fio = fio;
     }
 }

@@ -58,6 +58,8 @@ import com.yandex.mapkit.map.PlacemarkMapObject;
 import com.yandex.mapkit.mapview.MapView;
 import com.yandex.runtime.image.ImageProvider;
 
+import org.w3c.dom.Text;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -170,12 +172,14 @@ public class MapFragment extends BottomSheetDialogFragment {
         TextView set_latitude_map = bottomSheetDialog.findViewById(R.id.set_latitude_map);
         TextView set_longitude_map = bottomSheetDialog.findViewById(R.id.set_longitude_map);
         TextView set_count = bottomSheetDialog.findViewById(R.id.set_count_map);
+        TextView set_admin = bottomSheetDialog.findViewById(R.id.set_admin_map);
         ImageView setImageMap = bottomSheetDialog.findViewById(R.id.setImageMap);
         Button sendReport = bottomSheetDialog.findViewById(R.id.button_create_report);
         set_object_map.setText(object.getName());
         set_latitude_map.setText(object.getLatitude());
         set_longitude_map.setText(object.getLongitude());
         set_count.setText(object.getCount());
+        set_admin.setText(object.getFio());
         App.getInstance().setObject_id(object.getId());
         System.out.println(App.getInstance().getObject_id());
         Glide.with(context)

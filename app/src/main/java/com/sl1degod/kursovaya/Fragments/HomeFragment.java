@@ -37,6 +37,7 @@ import com.sl1degod.kursovaya.Viewmodels.ReportsViewModel;
 import com.sl1degod.kursovaya.Viewmodels.ViolationsViewModel;
 import com.sl1degod.kursovaya.databinding.FragmentHomeBinding;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -89,6 +90,7 @@ public class HomeFragment extends Fragment {
         violationsViewModel = new ViewModelProvider(this).get(ViolationsViewModel.class);
         objectsViewModel = new ViewModelProvider(this).get(ObjectsViewModel.class);
         dialog = new Dialog(context);
+
         getViolations();
         getObjects();
         getAllReports();
@@ -104,22 +106,12 @@ public class HomeFragment extends Fragment {
                 adapter.setReportsList(reports);
                 adapter.notifyDataSetChanged();
                 reportsList = reports;
+
             }
         });
-        viewModel.getAllReports();
+        viewModel.getAdminReports(Integer.parseInt(App.getInstance().getUser_id()));
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    public void getReport(int id) {
-        viewModel.getReportCurrentMutableLiveData().observe(getViewLifecycleOwner(), report -> {
-            if (report == null) {
-                Toast.makeText(context, "Unluko", Toast.LENGTH_SHORT).show();
-            } else {
-                reportCurrent = report;
-            }
-        });
-        viewModel.getReport(id);
-    }
 
     @SuppressLint("NotifyDataSetChanged")
     public void getViolations() {
@@ -173,7 +165,6 @@ public class HomeFragment extends Fragment {
         dialog.setContentView(R.layout.filter_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setCancelable(false);
-
         spinnerVio = dialog.findViewById(R.id.filter_violations_spinner);
         spinnerObj = dialog.findViewById(R.id.filter_object_spinner);
         Button complete_button = dialog.findViewById(R.id.button_ready);
@@ -217,60 +208,32 @@ public class HomeFragment extends Fragment {
             String startDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date(selection.first));
             String endDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date(selection.second));
             dateStart.setText(startDate + " - " + endDate);
+            startDateFilter = selection.first;
+            endDateFilter = selection.second;
+            System.out.println(startDateFilter + " - " + endDateFilter);
         });
         materialDatePicker.show(getParentFragmentManager(), "MaterialDateRangePicker");
     }
-
-//    private void filter() {
-//        ArrayList<Reports> filteredList = new ArrayList<>();
-//        String selectedViolation = spinnerVio.getSelectedItem().toString();
-//        String selectedObject = spinnerObj.getSelectedItem().toString();
-//        for (Reports report : reportsList) {
-//            if (report.getViolations() != null && report.getObject() != null) {
-//                if (spinnerVio.getSelectedItem().equals("Не выбрано") && !spinnerObj.getSelectedItem().equals("Не выбрано") &&
-//                        report.getObject().contains(selectedObject)) {
-//                    filteredList.add(report);
-//                } else if (!spinnerVio.getSelectedItem().equals("Не выбрано") && spinnerObj.getSelectedItem().equals("Не выбрано") &&
-//                        report.getViolations().contains(selectedViolation)) {
-//                    filteredList.add(report);
-//                } else if (!spinnerVio.getSelectedItem().equals("Не выбрано") && !spinnerObj.getSelectedItem().equals("Не выбрано") &&
-//                        report.getViolations().contains(selectedViolation) && report.getObject().contains(selectedObject)) {
-//                    filteredList.add(report);
-//                }
-//            }
-//        }
-//
-//        adapter.setFilteredList(filteredList);
-//    }
 
     private void filter() throws ParseException {
         ArrayList<Reports> filteredList = new ArrayList<>();
         String selectedViolation = spinnerVio.getSelectedItem().toString();
         String selectedObject = spinnerObj.getSelectedItem().toString();
-        Pair<Long, Long> selectedDateRange = new Pair<>(startDateFilter, endDateFilter);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         for (Reports report : reportsList) {
-            Date reportDate = sdf.parse(report.getDate().substring(0, 10));
-            long reportTime = reportDate.getTime();
             if (report.getViolations() != null && report.getObject() != null) {
                 if (spinnerVio.getSelectedItem().equals("Не выбрано") && !spinnerObj.getSelectedItem().equals("Не выбрано") &&
-                        report.getObject().contains(selectedObject) && isWithinDateRange(reportTime, selectedDateRange)) {
+                        report.getObject().contains(selectedObject)) {
                     filteredList.add(report);
                 } else if (!spinnerVio.getSelectedItem().equals("Не выбрано") && spinnerObj.getSelectedItem().equals("Не выбрано") &&
-                        report.getViolations().contains(selectedViolation) && isWithinDateRange(reportTime, selectedDateRange)) {
+                        report.getViolations().contains(selectedViolation)) {
                     filteredList.add(report);
                 } else if (!spinnerVio.getSelectedItem().equals("Не выбрано") && !spinnerObj.getSelectedItem().equals("Не выбрано") &&
-                        report.getViolations().contains(selectedViolation) && report.getObject().contains(selectedObject) && isWithinDateRange(reportTime, selectedDateRange)) {
+                        report.getViolations().contains(selectedViolation) && report.getObject().contains(selectedObject)) {
                     filteredList.add(report);
                 }
             }
         }
-
         adapter.setFilteredList(filteredList);
-    }
-
-    private boolean isWithinDateRange(long date, Pair<Long, Long> dateRange) {
-        return date >= dateRange.first && date <= dateRange.second;
     }
 
     public void initVioSpinner(Spinner spinnerVio) {

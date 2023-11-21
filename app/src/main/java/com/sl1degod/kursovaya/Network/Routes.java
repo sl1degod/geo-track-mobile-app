@@ -40,7 +40,7 @@ public interface Routes {
 
     @GET("reports/{id}")
     @Headers({"Accept:application/json", "Content-Type:application/json"})
-    Call<Reports> getReport(@Path("id") int id);
+    Call<List<Reports>> getAdminReports(@Path("id") int id);
 
     @GET("objects/{id}")
     @Headers({"Accept:application/json", "Content-Type:application/json"})

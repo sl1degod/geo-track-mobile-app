@@ -47,9 +47,9 @@ public class ReportsViewModel extends ViewModel {
         this.listMutableLiveData = listMutableLiveData;
     }
 
-    public void getAllReports() {
+    public void getAdminReports(int id) {
         Routes routes = RetrofitInstance.getRetrofitInstance().create(Routes.class);
-        Call<List<Reports>> call = routes.getAllReports();
+        Call<List<Reports>> call = routes.getAdminReports(id);
         call.enqueue(new Callback<List<Reports>>() {
             @Override
             public void onResponse(@NonNull Call<List<Reports>> call, @NonNull Response<List<Reports>> response) {
@@ -67,22 +67,23 @@ public class ReportsViewModel extends ViewModel {
         });
     }
 
-    public void getReport(int id) {
+
+    public void getAllReports() {
         Routes routes = RetrofitInstance.getRetrofitInstance().create(Routes.class);
-        Call<Reports> call = routes.getReport(id);
-        call.enqueue(new Callback<Reports>() {
+        Call<List<Reports>> call = routes.getAllReports();
+        call.enqueue(new Callback<List<Reports>>() {
             @Override
-            public void onResponse(@NonNull Call<Reports> call, @NonNull Response<Reports> response) {
+            public void onResponse(@NonNull Call<List<Reports>> call, @NonNull Response<List<Reports>> response) {
                 if (response.isSuccessful()) {
-                    reportCurrentMutableLiveData.postValue(response.body());
+                    listMutableLiveData.postValue(response.body());
                     Log.d("TAG", "onResponse: " + response.body());
                 } else {
-                    reportCurrentMutableLiveData.postValue(null);
+                    listMutableLiveData.postValue(null);
                 }
             }
             @Override
-            public void onFailure(@NonNull Call<Reports> call, @NonNull Throwable t) {
-                reportCurrentMutableLiveData.postValue(null);
+            public void onFailure(@NonNull Call<List<Reports>> call, @NonNull Throwable t) {
+                listMutableLiveData.postValue(null);
             }
         });
     }

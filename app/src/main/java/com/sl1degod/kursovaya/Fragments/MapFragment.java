@@ -214,6 +214,7 @@ public class MapFragment extends BottomSheetDialogFragment {
         menu.clear();
         inflater.inflate(R.menu.menu_toolbar, menu);
         menu.setGroupVisible(R.id.homeGroup, false);
+        menu.setGroupVisible(R.id.profile, false);
 
         super.onCreateOptionsMenu(menu, inflater);
     }

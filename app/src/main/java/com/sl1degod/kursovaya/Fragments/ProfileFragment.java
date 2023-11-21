@@ -59,10 +59,12 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
+        setHasOptionsMenu(true);
 
         viewModel = new ViewModelProvider(this).get(UserViewModel.class);
         context = getContext();
-        getUserData(id, rootView);
+//        getUserData(id, rootView);
+        getUserData(String.valueOf(1), rootView);
         return rootView;
     }
 
@@ -92,10 +94,10 @@ public class ProfileFragment extends Fragment {
         login.setText(user.getLogin());
         password.setText(user.getPassword());
 
-        System.out.println(pathToImage + id);
+//        System.out.println(pathToImage + id);
 
         Glide.with(context)
-                    .load(pathToImage + id)
+                    .load(pathToImage + 1)
                     .centerCrop()
                     .into(imageView);
     }
@@ -105,6 +107,7 @@ public class ProfileFragment extends Fragment {
         menu.clear();
         inflater.inflate(R.menu.menu_toolbar, menu);
         menu.setGroupVisible(R.id.homeGroup, false);
+        menu.setGroupVisible(R.id.profile, true);
 
         super.onCreateOptionsMenu(menu, inflater);
     }

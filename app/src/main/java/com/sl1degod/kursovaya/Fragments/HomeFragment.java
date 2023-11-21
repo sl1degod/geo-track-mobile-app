@@ -109,7 +109,8 @@ public class HomeFragment extends Fragment {
 
             }
         });
-        viewModel.getAdminReports(Integer.parseInt(App.getInstance().getUser_id()));
+//        viewModel.getAdminReports(Integer.parseInt(App.getInstance().getUser_id()));
+        viewModel.getAdminReports(Integer.parseInt(String.valueOf(1)));
     }
 
 
@@ -142,6 +143,7 @@ public class HomeFragment extends Fragment {
         menu.clear();
         inflater.inflate(R.menu.menu_toolbar, menu);
         menu.setGroupVisible(R.id.homeGroup, true);
+        menu.setGroupVisible(R.id.profile, false);
 
         super.onCreateOptionsMenu(menu, inflater);
     }

@@ -17,13 +17,13 @@
             app:showAsAction="ifRoom|collapseActionView" />
     </group>
 
-<!--    <group-->
-<!--        android:id="@+id/profile">-->
+    <group
+        android:id="@+id/profile">
 
-<!--        <item-->
-<!--            android:id="@+id/exitProfile"-->
-<!--            android:icon="@drawable/baseline_sort_24"-->
-<!--            android:title="Сортировка"-->
-<!--            app:showAsAction="ifRoom|collapseActionView" />-->
-<!--    </group>-->
+        <item
+            android:id="@+id/exitProfile"
+            android:icon="@drawable/baseline_exit_to_app_24"
+            android:title="Выход"
+            app:showAsAction="ifRoom|collapseActionView" />
+    </group>
 </menu>

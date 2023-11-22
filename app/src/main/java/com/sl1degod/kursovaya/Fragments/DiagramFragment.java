@@ -2,6 +2,7 @@ package com.sl1degod.kursovaya.Fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -79,14 +80,18 @@ public class DiagramFragment extends Fragment {
             dates.add(charList.get(i).getDate());
         }
 
-        List<String> violations = new ArrayList<>();
-        for (int i = 0; i < charList.size(); i++) {
-            violations.add(charList.get(i).getViolation());
-        }
         List<Integer> count = new ArrayList<>();
         for (int i = 0; i < charList.size(); i++) {
             count.add(charList.get(i).getCount());
         }
+
+        List<String> violations = new ArrayList<>();
+        for (int i = 0; i < charList.size(); i++) {
+            if (charList.get(i).getViolation().equals("Нарушение 1")) {
+                violations.add(charList.get(i).getViolation());
+            }
+        }
+
 
         List<Entry> entries = new ArrayList<>();
         for (int i = 0; i < violations.size(); i++) {
@@ -121,11 +126,35 @@ public class DiagramFragment extends Fragment {
             }
         });
 
-        LineData lineData = new LineData(new LineDataSet(entries, charList.get(0).getViolation()));
+        List<String> violations2 = new ArrayList<>();
+        List<Integer> count2 = new ArrayList<>();
+
+        for (int i = 0; i < charList.size(); i++) {
+            if (charList.get(i).getViolation().equals("Нарушение 2")) {
+                violations2.add(charList.get(i).getViolation());
+                count2.add(charList.get(i).getCount());
+            }
+        }
+
+        List<Entry> entries2 = new ArrayList<>();
+        for (int i = 0; i < violations2.size(); i++) {
+            entries2.add(new Entry(i, count2.get(i)));
+        }
+
+        LineDataSet dataSet2 = new LineDataSet(entries2, "Нарушение 2");
+        dataSet2.setColor(Color.BLUE);
+        dataSet2.setLineWidth(2f);
+        dataSet2.setCircleColor(Color.BLUE);
+        dataSet2.setCircleRadius(4f);
+        dataSet2.setDrawCircleHole(false);
+
+        LineData lineData = new LineData(new LineDataSet(entries, "Нарушение 1"), dataSet2);
         lineChart.setData(lineData);
-//        lineChart.zoom(-1, 1, 10, 10);
+
+
         lineChart.invalidate();
     }
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         menu.clear();

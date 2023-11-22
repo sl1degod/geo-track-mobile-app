@@ -2,6 +2,8 @@ package com.sl1degod.kursovaya;
 
 import android.app.Application;
 
+import com.sl1degod.kursovaya.Models.Objects;
+import com.sl1degod.kursovaya.Models.Reports;
 import com.sl1degod.kursovaya.Models.Violations;
 import com.yandex.mapkit.MapKitFactory;
 
@@ -17,6 +19,10 @@ public class App extends Application {
     String object_id;
 
     int report_id;
+
+    List<Reports> reportsList;
+
+    List<Objects> objectsList;
 
     List<Violations> violationsList;
 
@@ -58,5 +64,21 @@ public class App extends Application {
 
     public void setViolationsList(List<Violations> violationsList) {
         this.violationsList = violationsList;
+    }
+
+    public List<Reports> getReportsList() {
+        return reportsList;
+    }
+
+    public void setReportsList(List<Reports> reportsList) {
+        this.reportsList = reportsList;
+    }
+
+    public List<Objects> getObjectsList() {
+        return objectsList;
+    }
+
+    public void setObjectsList(List<Objects> objectsList) {
+        this.objectsList = objectsList;
     }
 }

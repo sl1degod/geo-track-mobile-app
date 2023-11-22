@@ -1,19 +1,17 @@
 package com.sl1degod.kursovaya.Network;
 
+import com.sl1degod.kursovaya.Models.Chart;
 import com.sl1degod.kursovaya.Models.Objects;
 import com.sl1degod.kursovaya.Models.PostReports;
-import com.sl1degod.kursovaya.Models.ReportCurrent;
 import com.sl1degod.kursovaya.Models.ReportPoint;
 import com.sl1degod.kursovaya.Models.Reports;
 import com.sl1degod.kursovaya.Models.ReportsVio;
 import com.sl1degod.kursovaya.Models.Users;
-import com.sl1degod.kursovaya.Models.UsersProfile;
 import com.sl1degod.kursovaya.Models.Violations;
 
 import java.util.List;
 
 import okhttp3.MultipartBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -53,6 +51,10 @@ public interface Routes {
     @GET("violations")
     @Headers({"Accept:application/json", "Content-Type:application/json"})
     Call<List<Violations>> getViolations();
+
+    @GET("violationsChar")
+    @Headers({"Accept:application/json", "Content-Type:application/json"})
+    Call<List<Chart>> getCharViolations();
 
     @Multipart
     @POST("reportsvio")

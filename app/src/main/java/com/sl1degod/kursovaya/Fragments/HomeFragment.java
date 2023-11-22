@@ -106,6 +106,7 @@ public class HomeFragment extends Fragment {
                 adapter.setReportsList(reports);
                 adapter.notifyDataSetChanged();
                 reportsList = reports;
+                App.getInstance().setReportsList(reports);
 
             }
         });
@@ -121,6 +122,7 @@ public class HomeFragment extends Fragment {
                 Toast.makeText(context, "Unluko", Toast.LENGTH_SHORT).show();
             } else {
                 violationsList = violations;
+                App.getInstance().setViolationsList(violations);
             }
         });
         violationsViewModel.getViolations();
@@ -133,6 +135,7 @@ public class HomeFragment extends Fragment {
                 Toast.makeText(context, "Unluko", Toast.LENGTH_SHORT).show();
             } else {
                 objectsList = objects;
+                App.getInstance().setObjectsList(objects);
             }
         });
         objectsViewModel.getObjects();

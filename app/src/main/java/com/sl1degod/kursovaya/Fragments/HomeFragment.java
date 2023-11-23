@@ -90,7 +90,6 @@ public class HomeFragment extends Fragment {
         violationsViewModel = new ViewModelProvider(this).get(ViolationsViewModel.class);
         objectsViewModel = new ViewModelProvider(this).get(ObjectsViewModel.class);
         dialog = new Dialog(context);
-
         getViolations();
         getObjects();
         getAllReports();
@@ -110,8 +109,8 @@ public class HomeFragment extends Fragment {
 
             }
         });
-//        viewModel.getAdminReports(Integer.parseInt(App.getInstance().getUser_id()));
-        viewModel.getAdminReports(Integer.parseInt(String.valueOf(1)));
+        viewModel.getAdminReports(Integer.parseInt(App.getInstance().getUser_id()));
+//        viewModel.getAdminReports(Integer.parseInt(String.valueOf(1)));
     }
 
 
@@ -221,6 +220,8 @@ public class HomeFragment extends Fragment {
     }
 
     private void filter() throws ParseException {
+        TextView error = binding.clear;
+
         ArrayList<Reports> filteredList = new ArrayList<>();
         String selectedViolation = spinnerVio.getSelectedItem().toString();
         String selectedObject = spinnerObj.getSelectedItem().toString();
@@ -235,6 +236,11 @@ public class HomeFragment extends Fragment {
                 } else if (!spinnerVio.getSelectedItem().equals("Не выбрано") && !spinnerObj.getSelectedItem().equals("Не выбрано") &&
                         report.getViolations().contains(selectedViolation) && report.getObject().contains(selectedObject)) {
                     filteredList.add(report);
+                }
+                if (filteredList.isEmpty()) {
+                    error.setVisibility(View.VISIBLE);
+                } else {
+                    error.setVisibility(View.INVISIBLE);
                 }
             }
         }

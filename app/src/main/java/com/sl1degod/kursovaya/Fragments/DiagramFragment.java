@@ -24,7 +24,9 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.sl1degod.kursovaya.App;
 import com.sl1degod.kursovaya.Models.Chart;
+import com.sl1degod.kursovaya.Models.Violations;
 import com.sl1degod.kursovaya.R;
 import com.sl1degod.kursovaya.Viewmodels.ViolationsViewModel;
 
@@ -36,6 +38,8 @@ public class DiagramFragment extends Fragment {
     private LineChart lineChart;
 
     ViolationsViewModel violationsViewModel;
+
+    private List<Violations> violationsList = new ArrayList<>();
 
     List<Chart> charList = new ArrayList<>();
 
@@ -56,8 +60,9 @@ public class DiagramFragment extends Fragment {
         context = getContext();
         setHasOptionsMenu(true);
         violationsViewModel = new ViewModelProvider(this).get(ViolationsViewModel.class);
-        getCharViolations();
+        getViolations();
 
+        getCharViolations();
         return rootView;
     }
 
@@ -74,29 +79,79 @@ public class DiagramFragment extends Fragment {
         violationsViewModel.getCharViolations();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    public void getViolations() {
+        violationsViewModel.getListMutableLiveData().observe(getViewLifecycleOwner(), violations -> {
+            if (violations == null) {
+                Toast.makeText(context, "Unluko", Toast.LENGTH_SHORT).show();
+            } else {
+                violationsList = violations;
+            }
+        });
+        violationsViewModel.getViolations();
+    }
+
     private void chartLine() {
         List<String> dates = new ArrayList<>();
-        for (int i = 0; i < charList.size(); i++) {
-            dates.add(charList.get(i).getDate());
-        }
-
         List<Integer> count = new ArrayList<>();
-        for (int i = 0; i < charList.size(); i++) {
-            count.add(charList.get(i).getCount());
-        }
-
         List<String> violations = new ArrayList<>();
+
+        List<String> violations2 = new ArrayList<>();
+        List<Integer> count2 = new ArrayList<>();
+        List<String> dates2 = new ArrayList<>();
+
+        List<String> violations3 = new ArrayList<>();
+        List<Integer> count3 = new ArrayList<>();
+        List<String> dates3 = new ArrayList<>();
+//        for (int i = 0; i < charList.size(); i++) {
+//            dates.add(charList.get(i).getDate());
+//        }
+//
+//        for (int i = 0; i < charList.size(); i++) {
+//            count.add(charList.get(i).getCount());
+//        }
+
         for (int i = 0; i < charList.size(); i++) {
-            if (charList.get(i).getViolation().equals("Нарушение 1")) {
+            if (charList.get(i).getViolation().equals(violationsList.get(0).getName())) {
                 violations.add(charList.get(i).getViolation());
+                count.add(charList.get(i).getCount());
+                dates.add(charList.get(i).getDate());
             }
         }
-
 
         List<Entry> entries = new ArrayList<>();
         for (int i = 0; i < violations.size(); i++) {
             entries.add(new Entry(i, count.get(i)));
         }
+
+        for (int i = 0; i < charList.size(); i++) {
+            if (charList.get(i).getViolation().equals(violationsList.get(1).getName())) {
+                violations2.add(charList.get(i).getViolation());
+                count2.add(charList.get(i).getCount());
+                dates2.add(charList.get(i).getDate());
+            }
+        }
+
+        List<Entry> entries2 = new ArrayList<>();
+        for (int i = 0; i < violations2.size(); i++) {
+            entries2.add(new Entry(i, count2.get(i)));
+        }
+
+        for (int i = 0; i < charList.size(); i++) {
+            if (charList.get(i).getViolation().equals(violationsList.get(2).getName())) {
+                violations3.add(charList.get(i).getViolation());
+                count3.add(charList.get(i).getCount());
+                dates3.add(charList.get(i).getDate());
+            }
+        }
+
+        List<Entry> entries3 = new ArrayList<>();
+        for (int i = 0; i < violations3.size(); i++) {
+            entries3.add(new Entry(i, count3.get(i)));
+        }
+
+
+
 
         XAxis xAxis = lineChart.getXAxis();
         YAxis yAxisLeft = lineChart.getAxisLeft();
@@ -126,20 +181,7 @@ public class DiagramFragment extends Fragment {
             }
         });
 
-        List<String> violations2 = new ArrayList<>();
-        List<Integer> count2 = new ArrayList<>();
 
-        for (int i = 0; i < charList.size(); i++) {
-            if (charList.get(i).getViolation().equals("Нарушение 2")) {
-                violations2.add(charList.get(i).getViolation());
-                count2.add(charList.get(i).getCount());
-            }
-        }
-
-        List<Entry> entries2 = new ArrayList<>();
-        for (int i = 0; i < violations2.size(); i++) {
-            entries2.add(new Entry(i, count2.get(i)));
-        }
 
         LineDataSet dataSet2 = new LineDataSet(entries2, "Нарушение 2");
         dataSet2.setColor(Color.BLUE);
@@ -148,7 +190,14 @@ public class DiagramFragment extends Fragment {
         dataSet2.setCircleRadius(4f);
         dataSet2.setDrawCircleHole(false);
 
-        LineData lineData = new LineData(new LineDataSet(entries, "Нарушение 1"), dataSet2);
+        LineDataSet dataSet3 = new LineDataSet(entries3, "Нарушение 3");
+        dataSet3.setColor(Color.RED);
+        dataSet3.setLineWidth(2f);
+        dataSet3.setCircleColor(Color.RED);
+        dataSet3.setCircleRadius(4f);
+        dataSet3.setDrawCircleHole(false);
+
+        LineData lineData = new LineData(new LineDataSet(entries, "Нарушение 1"), dataSet2, dataSet3);
         lineChart.setData(lineData);
 
 

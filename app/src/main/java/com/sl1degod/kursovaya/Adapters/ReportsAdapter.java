@@ -95,7 +95,7 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.AdapterV
         public AdapterViewHolder(@NonNull View itemView) {
             super(itemView);
 //            id = itemView.findViewById(R.id.set_report_id);
-            FIO = itemView.findViewById(R.id.set_report_fio);
+//            FIO = itemView.findViewById(R.id.set_report_fio);
             violations = itemView.findViewById(R.id.set_name_report);
             object = itemView.findViewById(R.id.set_object);
             violations_image = itemView.findViewById(R.id.setReportImage);
@@ -105,7 +105,7 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.AdapterV
 
         public void bind(Reports reports) {
 //            id.setText(reports.getId());
-            FIO.setText(reports.getFio());
+//            FIO.setText(reports.getFio());
             violations.setText(reports.getViolations());
             object.setText(reports.getObject());
             date.setText(reports.getDate().substring(0, 10));

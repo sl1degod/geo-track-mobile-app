@@ -14,5 +14,14 @@
         android:background="@color/white"
         android:padding="5dp"/>
 
+    <TextView
+        android:id="@+id/clear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="invisible"
+        android:text="Ничего не найдено"
+        android:textSize="30sp"/>
+
 </FrameLayout>
 

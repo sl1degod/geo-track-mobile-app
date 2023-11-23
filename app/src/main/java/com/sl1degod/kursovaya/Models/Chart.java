@@ -2,12 +2,12 @@ package com.sl1degod.kursovaya.Models;
 
 public class Chart {
     String date, violation;
-    int object_id, count;
+    int id, count;
 
-    public Chart(String date, String violation, int object_id, int count) {
+    public Chart(String date, String violation, int id, int count) {
         this.date = date;
         this.violation = violation;
-        this.object_id = object_id;
+        this.id = id;
         this.count = count;
     }
 
@@ -27,12 +27,12 @@ public class Chart {
         this.violation = violation;
     }
 
-    public int getObject_id() {
-        return object_id;
+    public int getId() {
+        return id;
     }
 
-    public void setObject_id(int object_id) {
-        this.object_id = object_id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getCount() {

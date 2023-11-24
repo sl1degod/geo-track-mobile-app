@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -20,6 +21,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.sl1degod.kursovaya.Activity.LoginActivity;
+import com.sl1degod.kursovaya.Adapters.ReportsAdapter;
 import com.sl1degod.kursovaya.App;
 import com.sl1degod.kursovaya.Models.Users;
 import com.sl1degod.kursovaya.Network.RetrofitInstance;
@@ -31,6 +34,7 @@ import com.sl1degod.kursovaya.databinding.FragmentProfileBinding;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ProfileFragment extends Fragment {
@@ -63,8 +67,8 @@ public class ProfileFragment extends Fragment {
 
         viewModel = new ViewModelProvider(this).get(UserViewModel.class);
         context = getContext();
-//        getUserData(id, rootView);
-        getUserData(String.valueOf(1), rootView);
+        getUserData(id, rootView);
+//        getUserData(String.valueOf(1), rootView);
         return rootView;
     }
 
@@ -112,4 +116,13 @@ public class ProfileFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.exitProfile:
+                startActivity(new Intent(getContext(), LoginActivity.class));
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

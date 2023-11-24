@@ -103,6 +103,14 @@ public class DiagramFragment extends Fragment {
         List<String> violations3 = new ArrayList<>();
         List<Integer> count3 = new ArrayList<>();
         List<String> dates3 = new ArrayList<>();
+
+        List<String> violations4 = new ArrayList<>();
+        List<Integer> count4 = new ArrayList<>();
+        List<String> dates4 = new ArrayList<>();
+
+        List<String> violations5 = new ArrayList<>();
+        List<Integer> count5 = new ArrayList<>();
+        List<String> dates5 = new ArrayList<>();
 //        for (int i = 0; i < charList.size(); i++) {
 //            dates.add(charList.get(i).getDate());
 //        }
@@ -112,7 +120,7 @@ public class DiagramFragment extends Fragment {
 //        }
 
         for (int i = 0; i < charList.size(); i++) {
-            if (charList.get(i).getViolation().equals(violationsList.get(0).getName())) {
+            if (charList.get(i).getViolation().equals("Поломка насоса")) {
                 violations.add(charList.get(i).getViolation());
                 count.add(charList.get(i).getCount());
                 dates.add(charList.get(i).getDate());
@@ -125,7 +133,7 @@ public class DiagramFragment extends Fragment {
         }
 
         for (int i = 0; i < charList.size(); i++) {
-            if (charList.get(i).getViolation().equals(violationsList.get(1).getName())) {
+            if (charList.get(i).getViolation().equals("Поломка компрессора")) {
                 violations2.add(charList.get(i).getViolation());
                 count2.add(charList.get(i).getCount());
                 dates2.add(charList.get(i).getDate());
@@ -138,7 +146,7 @@ public class DiagramFragment extends Fragment {
         }
 
         for (int i = 0; i < charList.size(); i++) {
-            if (charList.get(i).getViolation().equals(violationsList.get(2).getName())) {
+            if (charList.get(i).getViolation().equals("Поломка электрического оборудования")) {
                 violations3.add(charList.get(i).getViolation());
                 count3.add(charList.get(i).getCount());
                 dates3.add(charList.get(i).getDate());
@@ -148,6 +156,32 @@ public class DiagramFragment extends Fragment {
         List<Entry> entries3 = new ArrayList<>();
         for (int i = 0; i < violations3.size(); i++) {
             entries3.add(new Entry(i, count3.get(i)));
+        }
+
+        for (int i = 0; i < charList.size(); i++) {
+            if (charList.get(i).getViolation().equals("Поломка систем освещения и вентиляции")) {
+                violations4.add(charList.get(i).getViolation());
+                count4.add(charList.get(i).getCount());
+                dates4.add(charList.get(i).getDate());
+            }
+        }
+
+        List<Entry> entries4 = new ArrayList<>();
+        for (int i = 0; i < violations4.size(); i++) {
+            entries4.add(new Entry(i, count4.get(i)));
+        }
+
+        for (int i = 0; i < charList.size(); i++) {
+            if (charList.get(i).getViolation().equals("Поломка трубопровод и различного оборудования")) {
+                violations5.add(charList.get(i).getViolation());
+                count5.add(charList.get(i).getCount());
+                dates5.add(charList.get(i).getDate());
+            }
+        }
+
+        List<Entry> entries5 = new ArrayList<>();
+        for (int i = 0; i < violations5.size(); i++) {
+            entries5.add(new Entry(i, count5.get(i)));
         }
 
 
@@ -197,7 +231,21 @@ public class DiagramFragment extends Fragment {
         dataSet3.setCircleRadius(4f);
         dataSet3.setDrawCircleHole(false);
 
-        LineData lineData = new LineData(new LineDataSet(entries, "Нарушение 1"), dataSet2, dataSet3);
+        LineDataSet dataSet4 = new LineDataSet(entries4, "Нарушение 4");
+        dataSet4.setColor(Color.GREEN);
+        dataSet4.setLineWidth(2f);
+        dataSet4.setCircleColor(Color.GREEN);
+        dataSet4.setCircleRadius(4f);
+        dataSet4.setDrawCircleHole(false);
+
+        LineDataSet dataSet5 = new LineDataSet(entries5, "Нарушение 5");
+        dataSet5.setColor(Color.CYAN);
+        dataSet5.setLineWidth(2f);
+        dataSet5.setCircleColor(Color.CYAN);
+        dataSet5.setCircleRadius(4f);
+        dataSet5.setDrawCircleHole(false);
+
+        LineData lineData = new LineData(new LineDataSet(entries, "Нарушение 1"), dataSet2, dataSet3, dataSet4);
         lineChart.setData(lineData);
 
 

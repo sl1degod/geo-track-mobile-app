@@ -53,9 +53,6 @@
         <activity
             android:name=".Activity.MainActivity"
             android:exported="true">
-
-
-
         </activity>
     </application>
 

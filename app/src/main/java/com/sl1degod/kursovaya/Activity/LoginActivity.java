@@ -76,4 +76,9 @@ public class LoginActivity extends AppCompatActivity {
         });
         viewModel.getUsers(user_login);
     }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(this, LoginActivity.class));
+    }
 }

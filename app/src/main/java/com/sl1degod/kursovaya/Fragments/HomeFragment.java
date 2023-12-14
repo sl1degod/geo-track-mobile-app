@@ -90,9 +90,14 @@ public class HomeFragment extends Fragment {
         violationsViewModel = new ViewModelProvider(this).get(ViolationsViewModel.class);
         objectsViewModel = new ViewModelProvider(this).get(ObjectsViewModel.class);
         dialog = new Dialog(context);
+        if (java.util.Objects.equals(App.getInstance().getUser_id(), String.valueOf(3))) {
+            getAllAdminReports();
+        } else {
+            getAllReports();
+        }
         getViolations();
         getObjects();
-        getAllReports();
+
         return binding.getRoot();
     }
 
@@ -110,6 +115,23 @@ public class HomeFragment extends Fragment {
             }
         });
         viewModel.getAdminReports(Integer.parseInt(App.getInstance().getUser_id()));
+//        viewModel.getAdminReports(Integer.parseInt(String.valueOf(1)));
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void getAllAdminReports() {
+        viewModel.getListMutableLiveData().observe(getViewLifecycleOwner(), reports -> {
+            if (reports == null) {
+                Toast.makeText(context, "Unluko", Toast.LENGTH_SHORT).show();
+            } else {
+                adapter.setReportsList(reports);
+                adapter.notifyDataSetChanged();
+                reportsList = reports;
+                App.getInstance().setReportsList(reports);
+
+            }
+        });
+        viewModel.getAllReports();
 //        viewModel.getAdminReports(Integer.parseInt(String.valueOf(1)));
     }
 
@@ -173,11 +195,11 @@ public class HomeFragment extends Fragment {
         spinnerObj = dialog.findViewById(R.id.filter_object_spinner);
         Button complete_button = dialog.findViewById(R.id.button_ready);
         Button cancel_button = dialog.findViewById(R.id.button_cancel);
-        dateInterval = dialog.findViewById(R.id.dateInterval);
-        dateStart = dialog.findViewById(R.id.setStartDate);
-        dateInterval.setOnClickListener(e -> {
-            showDateRangePicker();
-        });
+//        dateInterval = dialog.findViewById(R.id.dateInterval);
+//        dateStart = dialog.findViewById(R.id.setStartDate);
+//        dateInterval.setOnClickListener(e -> {
+//            showDateRangePicker();
+//        });
         initVioSpinner(spinnerVio);
         initObjectSpinner(spinnerObj);
 

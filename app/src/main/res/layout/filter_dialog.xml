@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="350dp"
-    android:layout_height="370dp"
+    android:layout_height="200dp"
     android:layout_gravity="center"
     android:background="@drawable/background_button"
     android:padding="10dp">
@@ -63,13 +63,13 @@
         android:layout_marginTop="25dp"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/dateInterval"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="Интервал"
-            android:textColor="@color/gray_500"
-            android:textSize="16sp" />
+<!--        <TextView-->
+<!--            android:id="@+id/dateInterval"-->
+<!--            android:layout_width="100dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Интервал"-->
+<!--            android:textColor="@color/gray_500"-->
+<!--            android:textSize="16sp" />-->
 
         <TextView
             android:id="@+id/setStartDate"

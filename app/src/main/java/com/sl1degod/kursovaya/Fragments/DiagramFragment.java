@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -43,6 +44,8 @@ public class DiagramFragment extends Fragment {
 
     List<Chart> charList = new ArrayList<>();
 
+    private TextView desc;
+
     Context context;
 
     Chart chart;
@@ -57,8 +60,10 @@ public class DiagramFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_diagram, container, false);
         lineChart = rootView.findViewById(R.id.chart);
+        desc = rootView.findViewById(R.id.description_diagramm);
         context = getContext();
         setHasOptionsMenu(true);
+        desc.setText("Данные графики показывают количество нарушений за определенную дату");
         violationsViewModel = new ViewModelProvider(this).get(ViolationsViewModel.class);
         getViolations();
 

@@ -63,7 +63,7 @@ public class DiagramFragment extends Fragment {
         desc = rootView.findViewById(R.id.description_diagramm);
         context = getContext();
         setHasOptionsMenu(true);
-        desc.setText("Данные графики показывают количество нарушений за определенную дату");
+        desc.setText("Данные графики показывают количество нарушений за все время");
         violationsViewModel = new ViewModelProvider(this).get(ViolationsViewModel.class);
         getViolations();
 
@@ -221,6 +221,13 @@ public class DiagramFragment extends Fragment {
         });
 
 
+        LineDataSet dataSet1 = new LineDataSet(entries5, "Нарушение 1");
+        dataSet1.setColor(Color.CYAN);
+        dataSet1.setLineWidth(2f);
+        dataSet1.setCircleColor(Color.CYAN);
+        dataSet1.setCircleRadius(4f);
+        dataSet1.setDrawCircleHole(false);
+        dataSet1.setDrawValues(false);
 
         LineDataSet dataSet2 = new LineDataSet(entries2, "Нарушение 2");
         dataSet2.setColor(Color.BLUE);
@@ -228,6 +235,7 @@ public class DiagramFragment extends Fragment {
         dataSet2.setCircleColor(Color.BLUE);
         dataSet2.setCircleRadius(4f);
         dataSet2.setDrawCircleHole(false);
+        dataSet2.setDrawValues(false);
 
         LineDataSet dataSet3 = new LineDataSet(entries3, "Нарушение 3");
         dataSet3.setColor(Color.RED);
@@ -235,6 +243,7 @@ public class DiagramFragment extends Fragment {
         dataSet3.setCircleColor(Color.RED);
         dataSet3.setCircleRadius(4f);
         dataSet3.setDrawCircleHole(false);
+        dataSet3.setDrawValues(false);
 
         LineDataSet dataSet4 = new LineDataSet(entries4, "Нарушение 4");
         dataSet4.setColor(Color.GREEN);
@@ -242,6 +251,7 @@ public class DiagramFragment extends Fragment {
         dataSet4.setCircleColor(Color.GREEN);
         dataSet4.setCircleRadius(4f);
         dataSet4.setDrawCircleHole(false);
+        dataSet4.setDrawValues(false);
 
         LineDataSet dataSet5 = new LineDataSet(entries5, "Нарушение 5");
         dataSet5.setColor(Color.CYAN);
@@ -249,8 +259,9 @@ public class DiagramFragment extends Fragment {
         dataSet5.setCircleColor(Color.CYAN);
         dataSet5.setCircleRadius(4f);
         dataSet5.setDrawCircleHole(false);
+        dataSet4.setDrawValues(false);
 
-        LineData lineData = new LineData(new LineDataSet(entries, "Нарушение 1"), dataSet2, dataSet3, dataSet4);
+        LineData lineData = new LineData(dataSet1, dataSet2, dataSet3, dataSet4);
         lineChart.setData(lineData);
 
 
@@ -266,4 +277,6 @@ public class DiagramFragment extends Fragment {
 
         super.onCreateOptionsMenu(menu, inflater);
     }
+
+
 }

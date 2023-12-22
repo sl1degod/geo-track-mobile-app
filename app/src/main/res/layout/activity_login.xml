@@ -4,9 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context=".Activity.LoginActivity">
 
-
+    <ImageView
+        android:id="@+id/acc_logo"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="120dp"
+        android:src="@drawable/logo_acc_auth"/>
 
     <TextView
         android:id="@+id/textafterlogo"
@@ -14,7 +21,8 @@
         android:layout_height="wrap_content"
         android:textSize="30sp"
         android:text="Авторизация"
-        android:layout_marginTop="250dp"
+        android:layout_below="@id/acc_logo"
+        android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
         android:textColor="@color/black"/>
 
@@ -72,7 +80,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/password_input"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="40dp"
             android:layout_marginEnd="20dp"
             android:background="@drawable/background_button"
             android:text="Войти"

@@ -6,10 +6,12 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.window.SplashScreen;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.sl1degod.kursovaya.App;
@@ -60,12 +62,21 @@ public class LoginActivity extends AppCompatActivity {
             boolean userFound = false;
             for (int i = 0; i < users.size(); i++) {
                 if (user_login.equals(users.get(i).getLogin()) && user_password.equals(users.get(i).getPassword())) {
-                    Intent intent = new Intent(this, MainActivity.class);
-                    App.getInstance().setUser_id(users.get(i).getId());
-                    intent.putExtra("user_id", users.get(i).getId());
-                    Log.d("login", users.get(i).getId());
-                    startActivity(intent);
-                    userFound = true; //
+                    // Показываем сплеш-скрин
+                    setContentView(R.layout.activity_spash_screen);
+                    int finalI = i;
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            App.getInstance().setUser_id(users.get(finalI).getId());
+                            intent.putExtra("user_id", users.get(finalI).getId());
+                            Log.d("login", users.get(finalI).getId());
+                            startActivity(intent);
+                            finish();
+                        }
+                    }, 2000);
+                    userFound = true;
                     break;
                 }
             }

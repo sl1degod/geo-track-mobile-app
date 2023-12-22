@@ -20,7 +20,7 @@ import com.sl1degod.kursovaya.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends AppCompatActivity {
     LoginViewModel viewModel;
-    boolean result = true;
+    boolean result = false;
 
     TextInputLayout loginTIL, passwordTIL;
 
@@ -47,7 +47,6 @@ public class LoginActivity extends AppCompatActivity {
                 loginTIL.setErrorEnabled(false);
             }
             else {
-                result = true;
                 loginTIL.setErrorEnabled(false);
                 passwordTIL.setErrorEnabled(false);
                 getUser(loginTIED.getText().toString().trim(), passwordTIED.getText().toString().trim());
@@ -58,6 +57,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void getUser(String user_login, String user_password) {
         viewModel.getLoadUserData().observe(this, users -> {
+            boolean userFound = false;
             for (int i = 0; i < users.size(); i++) {
                 if (user_login.equals(users.get(i).getLogin()) && user_password.equals(users.get(i).getPassword())) {
                     Intent intent = new Intent(this, MainActivity.class);
@@ -65,17 +65,18 @@ public class LoginActivity extends AppCompatActivity {
                     intent.putExtra("user_id", users.get(i).getId());
                     Log.d("login", users.get(i).getId());
                     startActivity(intent);
-                } else {
-                    result = false;
+                    userFound = true; //
+                    break;
                 }
             }
-//            if (!result) {
-//                loginTIL.setError(" ");
-//                passwordTIL.setError("Такого пользователя нет");
-//            }
+            if (!userFound) {
+                loginTIL.setError(" ");
+                passwordTIL.setError("Такого пользователя нет");
+            }
         });
         viewModel.getUsers(user_login);
     }
+
 
     @Override
     public void onBackPressed() {

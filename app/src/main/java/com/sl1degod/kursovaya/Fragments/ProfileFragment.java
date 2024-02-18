@@ -49,7 +49,7 @@ public class ProfileFragment extends Fragment {
 
     Users users;
 
-    String pathToImage = RetrofitInstance.getRetrofitInstance().baseUrl() + "users/image/";
+    String pathToImage = RetrofitInstance.getRetrofitInstance().baseUrl() + "static/users/";
 
     String id = App.getInstance().getUser_id();
 
@@ -101,7 +101,7 @@ public class ProfileFragment extends Fragment {
 //        System.out.println(pathToImage + id);
 
         Glide.with(context)
-                    .load(pathToImage + id)
+                    .load(pathToImage + id + ".jpg")
                     .centerCrop()
                     .into(imageView);
     }

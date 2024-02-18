@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.sl1degod.kursovaya.App;
 import com.sl1degod.kursovaya.Models.PostReports;
 import com.sl1degod.kursovaya.Models.ReportCurrent;
 import com.sl1degod.kursovaya.Models.Reports;
@@ -43,13 +44,10 @@ public class ReportsViewModel extends ViewModel {
         return postReportVio;
     }
 
-    public void setListMutableLiveData(MutableLiveData<List<Reports>> listMutableLiveData) {
-        this.listMutableLiveData = listMutableLiveData;
-    }
-
     public void getAdminReports(int id) {
         Routes routes = RetrofitInstance.getRetrofitInstance().create(Routes.class);
-        Call<List<Reports>> call = routes.getAdminReports(id);
+        String token = App.getInstance().getToken();
+        Call<List<Reports>> call = routes.getAdminReports(id, "Bearer " + token);
         call.enqueue(new Callback<List<Reports>>() {
             @Override
             public void onResponse(@NonNull Call<List<Reports>> call, @NonNull Response<List<Reports>> response) {
@@ -70,13 +68,14 @@ public class ReportsViewModel extends ViewModel {
 
     public void getAllReports() {
         Routes routes = RetrofitInstance.getRetrofitInstance().create(Routes.class);
-        Call<List<Reports>> call = routes.getAllReports();
+        String token = App.getInstance().getToken();
+        Call<List<Reports>> call = routes.getAllReports("Bearer " + token);
         call.enqueue(new Callback<List<Reports>>() {
             @Override
             public void onResponse(@NonNull Call<List<Reports>> call, @NonNull Response<List<Reports>> response) {
                 if (response.isSuccessful()) {
                     listMutableLiveData.postValue(response.body());
-                    Log.d("TAG", "onResponse: " + response.body());
+                    Log.d("AllReports", "onResponse: " + response.body());
                 } else {
                     listMutableLiveData.postValue(null);
                 }
@@ -90,7 +89,8 @@ public class ReportsViewModel extends ViewModel {
 
     public void postReportVio(int user_id, int violations_id, MultipartBody.Part requestBody) {
         Routes routes = RetrofitInstance.getRetrofitInstance().create(Routes.class);
-        Call<ReportsVio> call = routes.sendReportVio(user_id, violations_id, requestBody);
+        String token = App.getInstance().getToken();
+        Call<ReportsVio> call = routes.sendReportVio(user_id, violations_id, requestBody, "Bearer " + token);
         call.enqueue(new Callback<ReportsVio>() {
             @Override
             public void onResponse(@NonNull Call<ReportsVio> call, @NonNull Response<ReportsVio> response) {
@@ -111,7 +111,8 @@ public class ReportsViewModel extends ViewModel {
 
     public void postReport(PostReports postReports) {
         Routes routes = RetrofitInstance.getRetrofitInstance().create(Routes.class);
-        Call<PostReports> call = routes.sendReport(postReports);
+        String token = App.getInstance().getToken();
+        Call<PostReports> call = routes.sendReport(postReports, "Bearer " + token);
         call.enqueue(new Callback<PostReports>() {
             @Override
             public void onResponse(@NonNull Call<PostReports> call, @NonNull Response<PostReports> response) {

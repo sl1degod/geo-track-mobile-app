@@ -115,24 +115,21 @@ public class HomeFragment extends Fragment {
             }
         });
         viewModel.getAdminReports(Integer.parseInt(App.getInstance().getUser_id()));
-//        viewModel.getAdminReports(Integer.parseInt(String.valueOf(1)));
     }
 
     @SuppressLint("NotifyDataSetChanged")
     public void getAllAdminReports() {
         viewModel.getListMutableLiveData().observe(getViewLifecycleOwner(), reports -> {
             if (reports == null) {
-                Toast.makeText(context, "Unluko", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "123", Toast.LENGTH_SHORT).show();
             } else {
                 adapter.setReportsList(reports);
                 adapter.notifyDataSetChanged();
                 reportsList = reports;
                 App.getInstance().setReportsList(reports);
-
             }
         });
         viewModel.getAllReports();
-//        viewModel.getAdminReports(Integer.parseInt(String.valueOf(1)));
     }
 
 

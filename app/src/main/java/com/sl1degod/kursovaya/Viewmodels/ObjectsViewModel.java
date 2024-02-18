@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.sl1degod.kursovaya.App;
 import com.sl1degod.kursovaya.Models.Objects;
 import com.sl1degod.kursovaya.Models.ReportPoint;
 import com.sl1degod.kursovaya.Network.RetrofitInstance;
@@ -36,7 +37,9 @@ public class ObjectsViewModel extends ViewModel {
 
     public void getObjects() {
         Routes routes = RetrofitInstance.getRetrofitInstance().create(Routes.class);
-        Call<List<Objects>> call = routes.getObjects();
+        String token = App.getInstance().getToken();
+
+        Call<List<Objects>> call = routes.getObjects("Bearer " + token);
         call.enqueue(new Callback<List<Objects>>() {
             @Override
             public void onResponse(@NonNull Call<List<Objects>> call, @NonNull Response<List<Objects>> response) {
@@ -57,7 +60,8 @@ public class ObjectsViewModel extends ViewModel {
 
     public void getObject(String id) {
         Routes routes = RetrofitInstance.getRetrofitInstance().create(Routes.class);
-        Call<List<ReportPoint>> call = routes.getObject(Integer.parseInt(id));
+        String token = App.getInstance().getToken();
+        Call<List<ReportPoint>> call = routes.getObject(Integer.parseInt(id), "Bearer " + token);
         call.enqueue(new Callback<List<ReportPoint>>() {
             @Override
             public void onResponse(@NonNull Call<List<ReportPoint>> call, @NonNull Response<List<ReportPoint>> response) {

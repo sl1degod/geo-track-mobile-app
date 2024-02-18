@@ -16,9 +16,13 @@ import android.window.SplashScreen;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sl1degod.kursovaya.App;
 import com.sl1degod.kursovaya.Fragments.ProfileFragment;
+import com.sl1degod.kursovaya.Models.Login;
 import com.sl1degod.kursovaya.R;
 import com.sl1degod.kursovaya.Viewmodels.LoginViewModel;
 import com.sl1degod.kursovaya.databinding.ActivityLoginBinding;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 public class LoginActivity extends AppCompatActivity {
     LoginViewModel viewModel;
@@ -51,42 +55,32 @@ public class LoginActivity extends AppCompatActivity {
             else {
                 loginTIL.setErrorEnabled(false);
                 passwordTIL.setErrorEnabled(false);
-                getUser(loginTIED.getText().toString().trim(), passwordTIED.getText().toString().trim());
+                login(loginTIED.getText().toString().trim(), passwordTIED.getText().toString().trim());
             }
         });
 
     }
 
-    private void getUser(String user_login, String user_password) {
-        viewModel.getLoadUserData().observe(this, users -> {
-            boolean userFound = false;
-            for (int i = 0; i < users.size(); i++) {
-                if (user_login.equals(users.get(i).getLogin()) && user_password.equals(users.get(i).getPassword())) {
-                    // Показываем сплеш-скрин
-                    setContentView(R.layout.activity_spash_screen);
-                    int finalI = i;
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            App.getInstance().setUser_id(users.get(finalI).getId());
-                            intent.putExtra("user_id", users.get(finalI).getId());
-                            Log.d("login", users.get(finalI).getId());
-                            startActivity(intent);
-                            finish();
-                        }
-                    }, 2000);
-                    userFound = true;
-                    break;
-                }
-            }
-            if (!userFound) {
-                loginTIL.setError(" ");
-                passwordTIL.setError("Такого пользователя нет");
+    private void login(String user_login, String user_password) {
+        viewModel.getToken().observe(this, token -> {
+            if (token != null) {
+                setContentView(R.layout.activity_spash_screen);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }, 1000);
+            } else {
+                Toast.makeText(this, "Все поломалось", Toast.LENGTH_SHORT).show();
             }
         });
-        viewModel.getUsers(user_login);
+        Login login = new Login(user_login, user_password);
+        viewModel.login(login);
     }
+
 
 
     @Override

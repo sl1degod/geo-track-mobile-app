@@ -183,7 +183,7 @@ public class MapFragment extends BottomSheetDialogFragment {
         App.getInstance().setObject_id(object.getId());
         System.out.println(App.getInstance().getObject_id());
         Glide.with(context)
-                .load(RetrofitInstance.getRetrofitInstance().baseUrl() + "static/objects/" + object.getUuid_image() + ".jpg")
+                .load(RetrofitInstance.getRetrofitInstance().baseUrl() + "static/objects/" + object.getUuid_image())
                 .centerCrop()
                 .into(setImageMap);
 

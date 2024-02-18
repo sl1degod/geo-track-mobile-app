@@ -7,41 +7,48 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.sl1degod.kursovaya.App;
+import com.sl1degod.kursovaya.Models.Login;
+import com.sl1degod.kursovaya.Models.Token;
 import com.sl1degod.kursovaya.Models.Users;
 import com.sl1degod.kursovaya.Network.RetrofitInstance;
 import com.sl1degod.kursovaya.Network.Routes;
 
 import java.util.List;
 
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginViewModel extends ViewModel {
-    private final MutableLiveData<List<Users>> loadUserData = new MutableLiveData<>();
+    private MutableLiveData<Token> token = new MutableLiveData<>();
 
-    public MutableLiveData<List<Users>> getLoadUserData() {
-        return loadUserData;
+    public MutableLiveData<Token> getToken() {
+        return token;
     }
 
 
-    public void getUsers(String user_login) {
+    public void login(Login login) {
         Routes retrofitService = RetrofitInstance.getRetrofitInstance().create(Routes.class);
-        Call<List<Users>> call = retrofitService.getUsers(user_login);
-        call.enqueue(new Callback<List<Users>>() {
+        Call<Token> call = retrofitService.login(login);
+        call.enqueue(new Callback<Token>() {
             @Override
-            public void onResponse(@NonNull Call<List<Users>> call, @NonNull Response<List<Users>> response) {
+            public void onResponse(@NonNull Call<Token> call, @NonNull Response<Token> response) {
                 if (response.isSuccessful()) {
-                    loadUserData.postValue(response.body());
-                    Log.d("1230", String.valueOf(response.body()));
+                    token.postValue(response.body());
+                    App.getInstance().setUser_id(response.body().getUserId());
+                    App.getInstance().setToken(response.body().getToken());
+                    Log.d("token", String.valueOf(App.getInstance().getToken()));
+                    Log.d("userId", String.valueOf(response.body().getUserId()));
                 } else {
-                    loadUserData.postValue(null);
+                    token.postValue(null);
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<Users>> call, @NonNull Throwable t) {
-                loadUserData.postValue(null);
+            public void onFailure(@NonNull Call<Token> call, @NonNull Throwable t) {
+                token.postValue(null);
             }
         });
     }

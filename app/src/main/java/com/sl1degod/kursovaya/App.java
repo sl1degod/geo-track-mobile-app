@@ -1,5 +1,6 @@
 package com.sl1degod.kursovaya;
 
+import android.accounts.AccountManager;
 import android.app.Application;
 
 import com.sl1degod.kursovaya.Models.Objects;
@@ -18,7 +19,7 @@ public class App extends Application {
 
     String object_id;
 
-    int report_id;
+    String token;
 
     List<Reports> reportsList;
 
@@ -29,9 +30,16 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
         mInstance = this;
         MapKitFactory.setApiKey(MAPKIT_API_KEY);
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     private Boolean isActiveMap;

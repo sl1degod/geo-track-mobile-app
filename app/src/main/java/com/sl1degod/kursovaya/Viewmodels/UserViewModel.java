@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.sl1degod.kursovaya.App;
+import com.sl1degod.kursovaya.Models.Token;
 import com.sl1degod.kursovaya.Models.Users;
 import com.sl1degod.kursovaya.Models.UsersProfile;
 import com.sl1degod.kursovaya.Network.RetrofitInstance;
@@ -32,7 +34,8 @@ public class UserViewModel extends ViewModel {
 
     public void getUser(String id) {
         Routes retrofitService = RetrofitInstance.getRetrofitInstance().create(Routes.class);
-        Call<Users> call = retrofitService.getUser(id);
+        String token = App.getInstance().getToken();
+        Call<Users> call = retrofitService.getUser(id, "Bearer " + token);
         call.enqueue(new Callback<Users>() {
             @Override
             public void onResponse(@NonNull Call<Users> call, @NonNull Response<Users> response) {
@@ -51,6 +54,8 @@ public class UserViewModel extends ViewModel {
             }
         });
     }
+
+
 
 }
 

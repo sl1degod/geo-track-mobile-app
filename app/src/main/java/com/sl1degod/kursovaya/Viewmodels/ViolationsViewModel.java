@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.sl1degod.kursovaya.App;
 import com.sl1degod.kursovaya.Models.Chart;
 import com.sl1degod.kursovaya.Models.Violations;
 import com.sl1degod.kursovaya.Network.RetrofitInstance;
@@ -31,7 +32,8 @@ public class ViolationsViewModel extends ViewModel {
 
     public void getViolations() {
         Routes routes = RetrofitInstance.getRetrofitInstance().create(Routes.class);
-        Call<List<Violations>> call = routes.getViolations();
+        String token = App.getInstance().getToken();
+        Call<List<Violations>> call = routes.getViolations("Bearer " + token);
         call.enqueue(new Callback<List<Violations>>() {
             @Override
             public void onResponse(@NonNull Call<List<Violations>> call, @NonNull Response<List<Violations>> response) {
@@ -52,7 +54,8 @@ public class ViolationsViewModel extends ViewModel {
 
     public void getCharViolations() {
         Routes routes = RetrofitInstance.getRetrofitInstance().create(Routes.class);
-        Call<List<Chart>> call = routes.getCharViolations();
+        String token = App.getInstance().getToken();
+        Call<List<Chart>> call = routes.getCharViolations("Bearer " + token);
         call.enqueue(new Callback<List<Chart>>() {
             @Override
             public void onResponse(@NonNull Call<List<Chart>> call, @NonNull Response<List<Chart>> response) {

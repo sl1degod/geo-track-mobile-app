@@ -1,24 +1,36 @@
 package com.sl1degod.kursovaya.Activity;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.material.textfield.TextInputLayout;
 import com.sl1degod.kursovaya.App;
 import com.sl1degod.kursovaya.Fragments.MapFragment;
 import com.sl1degod.kursovaya.Models.PostReports;
@@ -44,13 +56,17 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
-public class CreateReportActivity extends AppCompatActivity {
+public class CreateReportActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     ImageButton imageButton;
 
     ImageView imageView;
 
     Button sendReport;
+
+    TextInputLayout descTIL;
+
+    EditText descTIET;
 
     private Uri outputFileUri;
     private ViolationsViewModel violationsViewModel;
@@ -70,6 +86,13 @@ public class CreateReportActivity extends AppCompatActivity {
     public int rep_vio_id;
     private static final int REQUEST_TAKE_PHOTO = 1;
 
+    private GoogleApiClient mGoogleApiClient;
+
+    private Location mLastLocation;
+
+    private double latitude = 0;
+    private double longitude = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +104,7 @@ public class CreateReportActivity extends AppCompatActivity {
         imageButton = findViewById(R.id.addReportImage);
         imageView = findViewById(R.id.setCreateReportImage);
         sendReport = findViewById(R.id.sendReport);
+        descTIET = findViewById(R.id.desc_tiet);
         imageButton.setOnClickListener(e -> {
             Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if (takePhotoIntent.resolveActivity(getPackageManager()) != null) {
@@ -111,6 +135,12 @@ public class CreateReportActivity extends AppCompatActivity {
         });
         getViolations();
 
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+
     }
 
     private File createImageFile() throws IOException {
@@ -125,6 +155,7 @@ public class CreateReportActivity extends AppCompatActivity {
         outputFileUri = Uri.fromFile(image);
         return image;
     }
+
     @SuppressLint("NotifyDataSetChanged")
     public void getViolations() {
         violationsViewModel.getListMutableLiveData().observe(this, violations -> {
@@ -158,7 +189,7 @@ public class CreateReportActivity extends AppCompatActivity {
                 Toast.makeText(context, "all good", Toast.LENGTH_SHORT).show();
                 rep_vio_id = report.getId();
                 PostReports postReports = new PostReports(Integer.parseInt(App.getInstance().getUser_id()), rep_vio_id,
-                        Integer.parseInt(App.getInstance().getObject_id()));
+                        Integer.parseInt(App.getInstance().getObject_id()), latitude, longitude, descTIET.getText().toString());
                 postReport(postReports);
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
@@ -193,6 +224,27 @@ public class CreateReportActivity extends AppCompatActivity {
     }
 
 
+    @SuppressLint("MissingPermission")
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);
+        if (mLastLocation != null) {
+            latitude = mLastLocation.getLatitude();
+            longitude = mLastLocation.getLongitude();
+            Log.d("help", latitude + " " + longitude);
+        } else {
+            Toast.makeText(context, "error", Toast.LENGTH_SHORT).show();
+        }
+    }
 
+    @Override
+    public void onConnectionSuspended(int i) {
 
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
 }

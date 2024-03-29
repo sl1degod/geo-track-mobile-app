@@ -10,10 +10,10 @@
         android:iconTint="@color/gray_500"
         android:icon="@drawable/baseline_map_24"/>
 
-    <item android:id="@+id/bottomDiagram"
-        android:title="Диаграммы"
-        android:iconTint="@color/gray_500"
-        android:icon="@drawable/baseline_document_scanner_24"/>
+<!--    <item android:id="@+id/bottomDiagram"-->
+<!--        android:title="Диаграммы"-->
+<!--        android:iconTint="@color/gray_500"-->
+<!--        android:icon="@drawable/baseline_document_scanner_24"/>-->
 
     <item android:id="@+id/bottomProfile"
         android:title="Профиль"

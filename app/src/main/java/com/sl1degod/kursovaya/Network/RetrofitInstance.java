@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitInstance {
     public static Retrofit getRetrofitInstance() {
-        String BASE_URL = "http://192.168.1.182:5000";
+        String BASE_URL = "http://192.168.30.82:5000";
 
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);

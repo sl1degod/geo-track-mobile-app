@@ -32,6 +32,27 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="200dp"
             android:layout_marginTop="50dp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/desc_input"
+            style="@style/TextInputLayout"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/violations_spinner"
+            app:boxStrokeErrorColor="@color/red"
+            android:layout_marginStart="150dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="20dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/desc_tiet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextInputEditText"
+            android:hint="Описание"
+            android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
     </RelativeLayout>
 
     <RelativeLayout

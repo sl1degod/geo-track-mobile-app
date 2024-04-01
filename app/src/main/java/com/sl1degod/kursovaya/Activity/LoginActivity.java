@@ -74,14 +74,12 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }, 1000);
             } else {
-                Toast.makeText(this, "Все поломалось", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Данные неверны", Toast.LENGTH_SHORT).show();
             }
         });
         Login login = new Login(user_login, user_password);
         viewModel.login(login);
     }
-
-
 
     @Override
     public void onBackPressed() {

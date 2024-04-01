@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -14,6 +15,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -56,7 +59,7 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
-public class CreateReportActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class CreateReportActivity extends AppCompatActivity {
 
     ImageButton imageButton;
 
@@ -90,8 +93,11 @@ public class CreateReportActivity extends AppCompatActivity implements GoogleApi
 
     private Location mLastLocation;
 
-    private double latitude = 0;
-    private double longitude = 0;
+    private double latitude;
+    private double longitude;
+
+    private LocationManager locationManager;
+    private LocationListener locationListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,12 +141,52 @@ public class CreateReportActivity extends AppCompatActivity implements GoogleApi
         });
         getViolations();
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(LocationServices.API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+                Log.d("location", latitude + " " + longitude);
+            }
 
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+            @Override
+            public void onProviderEnabled(String provider) {}
+
+            @Override
+            public void onProviderDisabled(String provider) {}
+
+        };
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        } else {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+        }
+
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+                }
+            } else {
+                Toast.makeText(this, "Разрешение на доступ к местоположению не было предоставлено", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (locationManager != null) {
+            locationManager.removeUpdates(locationListener);
+        }
     }
 
     private File createImageFile() throws IOException {
@@ -153,6 +199,8 @@ public class CreateReportActivity extends AppCompatActivity implements GoogleApi
                 storageDir
         );
         outputFileUri = Uri.fromFile(image);
+
+
         return image;
     }
 
@@ -190,6 +238,10 @@ public class CreateReportActivity extends AppCompatActivity implements GoogleApi
                 rep_vio_id = report.getId();
                 PostReports postReports = new PostReports(Integer.parseInt(App.getInstance().getUser_id()), rep_vio_id,
                         Integer.parseInt(App.getInstance().getObject_id()), latitude, longitude, descTIET.getText().toString());
+                Log.d("id", App.getInstance().getObject_id());
+                Log.d("latitude", String.valueOf(latitude));
+                Log.d("longitude", String.valueOf(longitude));
+                Log.d("desc", String.valueOf(descTIET.getText().toString()));
                 postReport(postReports);
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
@@ -221,30 +273,5 @@ public class CreateReportActivity extends AppCompatActivity implements GoogleApi
                 e.printStackTrace();
             }
         }
-    }
-
-
-    @SuppressLint("MissingPermission")
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);
-        if (mLastLocation != null) {
-            latitude = mLastLocation.getLatitude();
-            longitude = mLastLocation.getLongitude();
-            Log.d("help", latitude + " " + longitude);
-        } else {
-            Toast.makeText(context, "error", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
     }
 }

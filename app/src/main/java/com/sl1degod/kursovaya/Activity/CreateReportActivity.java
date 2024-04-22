@@ -13,6 +13,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
@@ -88,6 +89,9 @@ public class CreateReportActivity extends AppCompatActivity {
 
     public int rep_vio_id;
     private static final int REQUEST_TAKE_PHOTO = 1;
+
+    private static final int REQUEST_EDIT_PHOTO = 2;
+
 
     private GoogleApiClient mGoogleApiClient;
 
@@ -198,9 +202,8 @@ public class CreateReportActivity extends AppCompatActivity {
                 ".jpg",
                 storageDir
         );
-        outputFileUri = Uri.fromFile(image);
-
-
+        outputFileUri = FileProvider.getUriForFile(context, "com.example.android.fileprovider", image);
+        System.out.println(outputFileUri);
         return image;
     }
 
@@ -222,7 +225,6 @@ public class CreateReportActivity extends AppCompatActivity {
         for (Violations violation : violationsList) {
             violationsNames.add(violation.getName());
         }
-
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, violationsNames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -264,8 +266,21 @@ public class CreateReportActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
+            Intent editIntent = new Intent(Intent.ACTION_EDIT);
+            editIntent.setDataAndType(outputFileUri, "image/*");
+            editIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            editIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+            List<ResolveInfo> resInfoList = this.getPackageManager().queryIntentActivities(editIntent, PackageManager.MATCH_DEFAULT_ONLY);
+
+            for (ResolveInfo resolveInfo : resInfoList) {
+                String packageName = resolveInfo.activityInfo.packageName;
+                this.grantUriPermission(packageName, outputFileUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            }
+            startActivity(Intent.createChooser(editIntent, "Edit Image"));
+        }
+
+        if (resultCode == RESULT_OK) {
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), outputFileUri);
                 imageView.setImageBitmap(bitmap);
@@ -274,4 +289,10 @@ public class CreateReportActivity extends AppCompatActivity {
             }
         }
     }
+
+
+
+
+
+
 }

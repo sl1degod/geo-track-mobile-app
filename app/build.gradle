@@ -8,8 +8,9 @@ android {
 
     defaultConfig {
         applicationId "com.sl1degod.kursovaya"
-        minSdk 30
-        targetSdk 33
+        minSdk 28
+        //noinspection ExpiredTargetSdkVersion
+        targetSdk 30
         versionCode 1
         versionName "1.0"
 

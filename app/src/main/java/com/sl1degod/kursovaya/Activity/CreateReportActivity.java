@@ -266,24 +266,27 @@ public class CreateReportActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
-            Intent editIntent = new Intent(Intent.ACTION_EDIT);
-            editIntent.setDataAndType(outputFileUri, "image/*");
-            editIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            editIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-            List<ResolveInfo> resInfoList = this.getPackageManager().queryIntentActivities(editIntent, PackageManager.MATCH_DEFAULT_ONLY);
 
-            for (ResolveInfo resolveInfo : resInfoList) {
-                String packageName = resolveInfo.activityInfo.packageName;
-                this.grantUriPermission(packageName, outputFileUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            }
-            startActivity(Intent.createChooser(editIntent, "Edit Image"));
-        }
 
         if (resultCode == RESULT_OK) {
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), outputFileUri);
                 imageView.setImageBitmap(bitmap);
+                imageView.setOnClickListener(e -> {
+                    if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
+                        Intent editIntent = new Intent(Intent.ACTION_EDIT);
+                        editIntent.setDataAndType(outputFileUri, "image/*");
+                        editIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        editIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+                        List<ResolveInfo> resInfoList = this.getPackageManager().queryIntentActivities(editIntent, PackageManager.MATCH_DEFAULT_ONLY);
+
+                        for (ResolveInfo resolveInfo : resInfoList) {
+                            String packageName = resolveInfo.activityInfo.packageName;
+                            this.grantUriPermission(packageName, outputFileUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        }
+                        startActivity(Intent.createChooser(editIntent, "Edit Image"));
+                    }
+                });
             } catch (IOException e) {
                 e.printStackTrace();
             }

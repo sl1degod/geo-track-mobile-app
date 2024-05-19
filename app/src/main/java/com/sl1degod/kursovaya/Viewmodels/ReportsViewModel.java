@@ -87,10 +87,10 @@ public class ReportsViewModel extends ViewModel {
         });
     }
 
-    public void postReportVio(int user_id, int violations_id, MultipartBody.Part requestBody) {
+    public void postReportVio(int user_id, int violations_id, int types_id, MultipartBody.Part requestBody) {
         Routes routes = RetrofitInstance.getRetrofitInstance().create(Routes.class);
         String token = App.getInstance().getToken();
-        Call<ReportsVio> call = routes.sendReportVio(user_id, violations_id, requestBody, "Bearer " + token);
+        Call<ReportsVio> call = routes.sendReportVio(user_id, violations_id, types_id, requestBody, "Bearer " + token);
         call.enqueue(new Callback<ReportsVio>() {
             @Override
             public void onResponse(@NonNull Call<ReportsVio> call, @NonNull Response<ReportsVio> response) {

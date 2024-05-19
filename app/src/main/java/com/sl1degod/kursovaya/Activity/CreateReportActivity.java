@@ -37,7 +37,9 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sl1degod.kursovaya.App;
 import com.sl1degod.kursovaya.Fragments.MapFragment;
+import com.sl1degod.kursovaya.Models.Elimination;
 import com.sl1degod.kursovaya.Models.PostReports;
+import com.sl1degod.kursovaya.Models.Reports;
 import com.sl1degod.kursovaya.Models.ReportsVio;
 import com.sl1degod.kursovaya.Models.Violations;
 import com.sl1degod.kursovaya.R;
@@ -77,10 +79,12 @@ public class CreateReportActivity extends AppCompatActivity {
     private ReportsViewModel reportsViewModel;
 
     Spinner spinner;
+    Spinner types_spinner;
 
     private Uri photoUri;
 
     private List<Violations> violationsList = new ArrayList<>();
+    private List<Elimination> eliminations = new ArrayList<>();
 
     Context context;
 
@@ -111,6 +115,7 @@ public class CreateReportActivity extends AppCompatActivity {
         violationsViewModel = new ViewModelProvider(this).get(ViolationsViewModel.class);
         reportsViewModel = new ViewModelProvider(this).get(ReportsViewModel.class);
         spinner = findViewById(R.id.violations_spinner);
+        types_spinner = findViewById(R.id.types_spinner);
         imageButton = findViewById(R.id.addReportImage);
         imageView = findViewById(R.id.setCreateReportImage);
         sendReport = findViewById(R.id.sendReport);
@@ -139,11 +144,12 @@ public class CreateReportActivity extends AppCompatActivity {
             } else {
                 RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), image);
                 MultipartBody.Part body = MultipartBody.Part.createFormData("image", imageFileName + ".jpg", requestFile);
-                postReportVio(App.getInstance().getUser_id(), String.valueOf(spinner.getSelectedItemId() + 1), body);
+                postReportVio(App.getInstance().getUser_id(), String.valueOf(spinner.getSelectedItemId() + 1), String.valueOf(types_spinner.getSelectedItemId() + 1), body);
             }
 
         });
         getViolations();
+        getEliminations();
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
@@ -220,6 +226,19 @@ public class CreateReportActivity extends AppCompatActivity {
         violationsViewModel.getViolations();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    public void getEliminations() {
+        violationsViewModel.getListElMutableLiveData().observe(this, elimination -> {
+            if (elimination == null) {
+                Toast.makeText(context, "Unluko", Toast.LENGTH_SHORT).show();
+            } else {
+                eliminations = elimination;
+                initTypesSpinner();
+            }
+        });
+        violationsViewModel.getEliminations();
+    }
+
     public void initSpinner() {
         List<String> violationsNames = new ArrayList<>();
         for (Violations violation : violationsList) {
@@ -229,9 +248,18 @@ public class CreateReportActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
     }
+    public void initTypesSpinner() {
+        List<String> eliminationNames = new ArrayList<>();
+        for (Elimination elimination : eliminations) {
+            eliminationNames.add(elimination.getTypes());
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, eliminationNames);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        types_spinner.setAdapter(adapter);
+    }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void postReportVio(String user_id, String violations_id, MultipartBody.Part requestBody) {
+    public void postReportVio(String user_id, String violations_id, String types_id, MultipartBody.Part requestBody) {
         reportsViewModel.getPostReportVio().observe(this, report -> {
             if (report == null) {
                 Toast.makeText(context, "Unluko", Toast.LENGTH_SHORT).show();
@@ -249,7 +277,7 @@ public class CreateReportActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        reportsViewModel.postReportVio(Integer.parseInt(user_id), Integer.parseInt(violations_id), requestBody);
+        reportsViewModel.postReportVio(Integer.parseInt(user_id), Integer.parseInt(violations_id), Integer.parseInt(types_id), requestBody);
     }
 
     @SuppressLint("NotifyDataSetChanged")

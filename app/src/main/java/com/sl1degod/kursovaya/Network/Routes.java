@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.sl1degod.kursovaya.App;
 import com.sl1degod.kursovaya.Models.Chart;
+import com.sl1degod.kursovaya.Models.Elimination;
 import com.sl1degod.kursovaya.Models.Login;
 import com.sl1degod.kursovaya.Models.Objects;
 import com.sl1degod.kursovaya.Models.PostReports;
@@ -71,10 +72,15 @@ public interface Routes {
     @Headers({"Accept:application/json", "Content-Type:application/json"})
     Call<List<Chart>> getCharViolations(@Header("Authorization") String USER_TOKEN);
 
+    @GET("elimination")
+    @Headers({"Accept:application/json", "Content-Type:application/json"})
+    Call<List<Elimination>> getEliminations(@Header("Authorization") String USER_TOKEN);
+
     @Multipart
     @POST("reportsvio")
     Call<ReportsVio> sendReportVio(@Part("user_id") int user_id,
                                    @Part("violations_id") int violations_id,
+                                   @Part("elimination_id") int types_id,
                                    @Part MultipartBody.Part image,
                                    @Header("Authorization") String USER_TOKEN);
 

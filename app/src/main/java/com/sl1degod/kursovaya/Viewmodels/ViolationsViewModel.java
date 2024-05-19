@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.sl1degod.kursovaya.App;
 import com.sl1degod.kursovaya.Models.Chart;
+import com.sl1degod.kursovaya.Models.Elimination;
 import com.sl1degod.kursovaya.Models.Violations;
 import com.sl1degod.kursovaya.Network.RetrofitInstance;
 import com.sl1degod.kursovaya.Network.Routes;
@@ -20,10 +21,15 @@ import retrofit2.Response;
 
 public class ViolationsViewModel extends ViewModel {
     MutableLiveData<List<Violations>> listMutableLiveData = new MutableLiveData<>();
+    MutableLiveData<List<Elimination>> listElMutableLiveData = new MutableLiveData<>();
     MutableLiveData<List<Chart>> charList = new MutableLiveData<>();
 
     public MutableLiveData<List<Violations>> getListMutableLiveData() {
         return listMutableLiveData;
+    }
+
+    public MutableLiveData<List<Elimination>> getListElMutableLiveData() {
+        return listElMutableLiveData;
     }
 
     public MutableLiveData<List<Chart>> getCharList() {
@@ -70,6 +76,28 @@ public class ViolationsViewModel extends ViewModel {
             @Override
             public void onFailure(@NonNull Call<List<Chart>> call, @NonNull Throwable t) {
                 charList.postValue(null);
+            }
+        });
+    }
+
+    public void getEliminations() {
+        Routes routes = RetrofitInstance.getRetrofitInstance().create(Routes.class);
+        String token = App.getInstance().getToken();
+        Call<List<Elimination>> call = routes.getEliminations("Bearer " + token);
+        call.enqueue(new Callback<List<Elimination>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Elimination>> call, @NonNull Response<List<Elimination>> response) {
+                if (response.isSuccessful()) {
+                    listElMutableLiveData.postValue(response.body());
+                    Log.d("TAG", "onResponse: " + response.body());
+                } else {
+                    listElMutableLiveData.postValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<Elimination>> call, @NonNull Throwable t) {
+                listElMutableLiveData.postValue(null);
             }
         });
     }

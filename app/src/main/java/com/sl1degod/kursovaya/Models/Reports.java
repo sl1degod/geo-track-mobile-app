@@ -1,9 +1,9 @@
 package com.sl1degod.kursovaya.Models;
 
 public class Reports {
-    public String id, fio, violations, object, latitude, longitude, violations_image, date, time;
+    public String id, fio, violations, object, latitude, longitude, violations_image, date, time, type, days;
 
-    public Reports(String id, String fio, String violations, String object, String latitude, String longitude, String violations_image, String date, String time) {
+    public Reports(String id, String fio, String violations, String object, String latitude, String longitude, String violations_image, String date, String time, String type, String days) {
         this.id = id;
         this.fio = fio;
         this.violations = violations;
@@ -13,6 +13,8 @@ public class Reports {
         this.violations_image = violations_image;
         this.date = date;
         this.time = time;
+        this.type = type;
+        this.days = days;
     }
 
     public String getId() {
@@ -85,5 +87,21 @@ public class Reports {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getDays() {
+        return days;
+    }
+
+    public void setDays(String days) {
+        this.days = days;
     }
 }

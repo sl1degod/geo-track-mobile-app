@@ -9,7 +9,7 @@
     <RelativeLayout
         android:id="@+id/rel1"
         android:layout_width="match_parent"
-        android:layout_height="150dp">
+        android:layout_height="200dp">
 
         <ImageButton
             android:id="@+id/addReportImage"
@@ -31,14 +31,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="200dp"
-            android:layout_marginTop="50dp"/>
+            android:layout_marginTop="20dp"/>
+
+        <Spinner
+            android:id="@+id/types_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="200dp"
+            android:layout_below="@id/violations_spinner"
+            android:layout_marginTop="20dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/desc_input"
             style="@style/TextInputLayout"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/violations_spinner"
+            android:layout_below="@id/types_spinner"
             app:boxStrokeErrorColor="@color/red"
             android:layout_marginStart="150dp"
             android:layout_marginTop="15dp"

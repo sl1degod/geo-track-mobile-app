@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -31,6 +32,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.sl1degod.kursovaya.Activity.CreateReportActivity;
+import com.sl1degod.kursovaya.Activity.LoginActivity;
 import com.sl1degod.kursovaya.Adapters.ReportsAdapter;
 import com.sl1degod.kursovaya.App;
 import com.sl1degod.kursovaya.Models.Objects;
@@ -97,6 +99,7 @@ public class MapFragment extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
 
         context = getContext();
         icon = ImageProvider.fromResource(context, R.drawable.marker);
@@ -214,9 +217,19 @@ public class MapFragment extends BottomSheetDialogFragment {
         menu.clear();
         inflater.inflate(R.menu.menu_toolbar, menu);
         menu.setGroupVisible(R.id.homeGroup, false);
-        menu.setGroupVisible(R.id.profile, false);
+        menu.setGroupVisible(R.id.profile, true);
 
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.exitProfile:
+                startActivity(new Intent(getContext(), LoginActivity.class));
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

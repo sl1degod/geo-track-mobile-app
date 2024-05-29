@@ -144,7 +144,8 @@ public class CreateReportActivity extends AppCompatActivity {
             } else {
                 RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), image);
                 MultipartBody.Part body = MultipartBody.Part.createFormData("image", imageFileName + ".jpg", requestFile);
-                postReportVio(App.getInstance().getUser_id(), String.valueOf(spinner.getSelectedItemId() + 1), String.valueOf(types_spinner.getSelectedItemId() + 1), body);
+                postReportVio(App.getInstance().getUser_id(), String.valueOf(spinner.getSelectedItemId() + 1),
+                        String.valueOf(types_spinner.getSelectedItemId() + 1), body);
             }
 
         });
@@ -295,7 +296,6 @@ public class CreateReportActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
         if (resultCode == RESULT_OK) {
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), outputFileUri);
@@ -312,14 +312,21 @@ public class CreateReportActivity extends AppCompatActivity {
                             String packageName = resolveInfo.activityInfo.packageName;
                             this.grantUriPermission(packageName, outputFileUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
                         }
-                        startActivity(Intent.createChooser(editIntent, "Edit Image"));
+                        startActivityForResult(Intent.createChooser(editIntent, "Edit Image"), REQUEST_EDIT_PHOTO);
                     }
                 });
+
+                if (requestCode == REQUEST_EDIT_PHOTO) {
+                    // Перезагрузка отредактированного изображения
+                    Bitmap editedBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), outputFileUri);
+                    imageView.setImageBitmap(editedBitmap);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
+
 
 
 

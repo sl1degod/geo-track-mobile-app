@@ -68,11 +68,11 @@ public class MainActivity extends AppCompatActivity {
 //                    item.setChecked(true);
 //                    toolbar.setTitle("Отчет");
 //                    break;
-                case R.id.bottomProfile:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new ProfileFragment()).commit();
-                    item.setChecked(true);
-                    toolbar.setTitle("Профиль");
-                    break;
+//                case R.id.bottomProfile:
+//                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new ProfileFragment()).commit();
+//                    item.setChecked(true);
+//                    toolbar.setTitle("Профиль");
+//                    break;
             }
             return false;
         });

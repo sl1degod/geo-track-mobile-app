@@ -35,8 +35,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="object"
+        android:gravity="center"
         android:layout_gravity="center_vertical"
-        android:layout_marginStart="220dp"
+        android:layout_marginStart="190dp"
         android:textSize="16sp"
         android:textColor="@color/black"/>
 
@@ -44,7 +45,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginStart="300dp"
+        android:layout_gravity="end"
+        android:layout_marginRight="20dp"
         android:layout_marginTop="10dp">
         <TextView
             android:id="@+id/set_time_report"
@@ -53,7 +55,6 @@
             android:text="time"
             android:textSize="16sp"
             android:layout_marginLeft="10dp"
-
             android:textColor="@color/black"/>
         <TextView
             android:id="@+id/set_date_report"
@@ -61,7 +62,6 @@
             android:layout_height="wrap_content"
             android:text="date"
             android:layout_gravity="center"
-
             android:textSize="12sp"
             android:textColor="@color/black"/>
     </LinearLayout>
